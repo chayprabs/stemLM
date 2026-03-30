@@ -4,6 +4,49 @@ type SvgProps = {
   className?: string;
 };
 
+export function HeroWorkspacePreview({ className }: SvgProps) {
+  return (
+    <div className={`hero-preview ${className ?? ""}`.trim()}>
+      <div className="hero-preview-window">
+        <div className="hero-preview-toolbar">
+          <span className="hero-preview-chip active">stemLM workspace</span>
+          <span className="hero-preview-chip">Physics</span>
+          <span className="hero-preview-chip">Guided mode</span>
+        </div>
+
+        <div className="hero-preview-panel">
+          <span className="hero-preview-label">Question</span>
+          <p>
+            Reduce the mixed resistor network and explain each transformation before solving for
+            current.
+          </p>
+        </div>
+
+        <div className="hero-preview-steps">
+          <div className="hero-preview-step active">
+            <span>Step 1</span>
+            <strong>Identify the parallel branch between A and B.</strong>
+          </div>
+          <div className="hero-preview-step">
+            <span>Step 2</span>
+            <strong>Collapse R1 and R2 into one equivalent resistor.</strong>
+          </div>
+          <div className="hero-preview-step">
+            <span>Step 3</span>
+            <strong>Use the simplified circuit to solve total current.</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="hero-preview-callout">
+        <span className="hero-preview-callout-label">Diagram-first hint</span>
+        <strong>Show the intermediate circuit before plugging in Ohm&apos;s law.</strong>
+        <span className="hero-preview-callout-link">See the updated diagram</span>
+      </div>
+    </div>
+  );
+}
+
 export function HeroCircuit({ className }: SvgProps) {
   return (
     <div className={className}>
@@ -240,6 +283,8 @@ export function StepDiagram({ diagram }: { diagram: DiagramKey }) {
       return null;
   }
 }
+
+export default StepDiagram;
 
 function OpticsSetupDiagram() {
   return (

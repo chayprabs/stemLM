@@ -1,35 +1,27 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import {
-  DM_Sans,
-  Instrument_Serif,
+  Inter,
   JetBrains_Mono,
-  Syne,
 } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 
-const sans = DM_Sans({
+const sans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
 });
 
-const display = Instrument_Serif({
+const wordmark = Inter({
   subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["400"],
-});
-
-const heading = Syne({
-  subsets: ["latin"],
-  variable: "--font-heading",
-  weight: ["700", "800"],
+  variable: "--font-wordmark",
+  weight: ["500"],
 });
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-  weight: ["400", "500"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -44,12 +36,8 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${sans.variable} ${display.variable} ${heading.variable} ${mono.variable}`}
-      >
-        {children}
-      </body>
+    <html lang="en" className={`${sans.variable} ${wordmark.variable} ${mono.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

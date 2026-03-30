@@ -23,6 +23,12 @@ export type AudienceCard = {
   description: string;
 };
 
+export type TrustInstitution = {
+  short: string;
+  name: string;
+  region: "India" | "USA" | "China";
+};
+
 export type DiagramKey =
   | "circuit-original"
   | "circuit-collapse"
@@ -43,6 +49,17 @@ export type DemoStep = {
   diagram: DiagramKey;
 };
 
+export type QuickCheck = {
+  prompt: string;
+  answer: string;
+  tip: string;
+};
+
+export type StudyTool = {
+  label: string;
+  prompt: string;
+};
+
 export type DemoScenario = {
   id: string;
   label: string;
@@ -50,6 +67,11 @@ export type DemoScenario = {
   topicKey: string;
   defaultQuestion: string;
   outputLabel: string;
+  difficulty: "Foundational" | "Core" | "Exam-style";
+  revisionSummary: string;
+  commonMistake: string;
+  quickChecks: QuickCheck[];
+  followUpPrompts: StudyTool[];
   tags: string[];
   steps: DemoStep[];
 };
@@ -191,6 +213,21 @@ export const domainPills = [
   "Cell biology",
 ];
 
+export const trustInstitutions: TrustInstitution[] = [
+  { short: "BITS", name: "BITS Pilani", region: "India" },
+  { short: "IITD", name: "IIT Delhi", region: "India" },
+  { short: "IITB", name: "IIT Bombay", region: "India" },
+  { short: "IITM", name: "IIT Madras", region: "India" },
+  { short: "IIITH", name: "IIIT Hyderabad", region: "India" },
+  { short: "MAHE", name: "Manipal", region: "India" },
+  { short: "STAN", name: "Stanford", region: "USA" },
+  { short: "UPENN", name: "UPenn", region: "USA" },
+  { short: "MIT", name: "MIT", region: "USA" },
+  { short: "HARV", name: "Harvard", region: "USA" },
+  { short: "TSING", name: "Tsinghua", region: "China" },
+  { short: "PKU", name: "Peking University", region: "China" },
+];
+
 export const demoScenarios: DemoScenario[] = [
   {
     id: "circuits",
@@ -200,6 +237,47 @@ export const demoScenarios: DemoScenario[] = [
     defaultQuestion:
       "A 12V source powers R3 = 4 ohm in series with a branch containing R1 = 6 ohm and R2 = 3 ohm in parallel. Find the equivalent resistance and total current.",
     outputLabel: "Equivalent circuit walkthrough",
+    difficulty: "Core",
+    revisionSummary:
+      "Spot the parallel branch first, reduce it to a single equivalent resistor, then combine the remaining series path before applying Ohm's law.",
+    commonMistake:
+      "Students often add 6 ohm and 3 ohm directly even though the resistors are in parallel, which breaks the rest of the solution.",
+    quickChecks: [
+      {
+        prompt: "Why do R1 and R2 count as parallel instead of series?",
+        answer:
+          "They share the same two nodes, so the voltage across both resistors is identical.",
+        tip: "Look at the connection points before choosing the formula.",
+      },
+      {
+        prompt: "What would the total current be if the source were 18V instead of 12V?",
+        answer: "The equivalent resistance stays 6 ohm, so the total current would be 18 / 6 = 3A.",
+        tip: "Once the network is reduced, reuse the same Req.",
+      },
+      {
+        prompt: "Which quantity must be found before the final current?",
+        answer:
+          "The equivalent resistance of the full network must be found first.",
+        tip: "Current is the last step here, not the first.",
+      },
+    ],
+    followUpPrompts: [
+      {
+        label: "Explain the branch logic",
+        prompt:
+          'Explain how to identify a parallel branch in the question "A 12V source powers R3 = 4 ohm in series with a branch containing R1 = 6 ohm and R2 = 3 ohm in parallel." Keep it beginner friendly.',
+      },
+      {
+        label: "Create a similar practice problem",
+        prompt:
+          "Create one new parallel-plus-series resistor problem with different values, then provide the final answer separately.",
+      },
+      {
+        label: "Check my own working",
+        prompt:
+          "Give me a short checklist for verifying a resistor-reduction solution before I trust the final current value.",
+      },
+    ],
     tags: ["Series + parallel", "Equivalent resistance", "Current"],
     steps: [
       {
@@ -242,6 +320,48 @@ export const demoScenarios: DemoScenario[] = [
     defaultQuestion:
       "An object is placed between f and 2f of a convex lens. Describe where the image forms and whether it is real or virtual.",
     outputLabel: "Ray diagram walkthrough",
+    difficulty: "Foundational",
+    revisionSummary:
+      "Mark the focal points first, trace the standard rays carefully, and then read image position, orientation, and size from the ray intersection.",
+    commonMistake:
+      "A common slip is stating only that the image is real without also mentioning that it forms beyond 2f and is enlarged.",
+    quickChecks: [
+      {
+        prompt: "Which ray passes straight through a convex lens without bending?",
+        answer:
+          "The ray through the optical center continues in the same straight line.",
+        tip: "This ray is the easiest anchor when the diagram gets crowded.",
+      },
+      {
+        prompt: "If the object moves beyond 2f, would the image still be enlarged?",
+        answer:
+          "No. For an object beyond 2f, the image forms between f and 2f and becomes diminished.",
+        tip: "Changing the object region changes all three image properties.",
+      },
+      {
+        prompt: "What three properties should the final statement include?",
+        answer:
+          "Position, orientation, and size of the image should all be stated.",
+        tip: "Avoid one-word answers in optics summaries.",
+      },
+    ],
+    followUpPrompts: [
+      {
+        label: "Slow down the ray tracing",
+        prompt:
+          'Walk me through the standard convex-lens rays for the case "object between f and 2f" as if I am drawing them by hand.',
+      },
+      {
+        label: "Compare with concave lens",
+        prompt:
+          "Compare the same setup with a concave lens and explain how the image properties change.",
+      },
+      {
+        label: "Turn this into revision notes",
+        prompt:
+          "Convert the convex-lens image-formation rule into five fast revision bullets for exam prep.",
+      },
+    ],
     tags: ["Convex lens", "Image position", "Ray tracing"],
     steps: [
       {
@@ -284,6 +404,48 @@ export const demoScenarios: DemoScenario[] = [
     defaultQuestion:
       "A 5 kg block slides down a frictionless 30 degree incline. Find the acceleration and identify the force components along and perpendicular to the plane.",
     outputLabel: "Free body diagram walkthrough",
+    difficulty: "Exam-style",
+    revisionSummary:
+      "Choose axes along and perpendicular to the incline, resolve weight into components, and then apply Newton's second law only along the motion direction.",
+    commonMistake:
+      "Many students use mg cos(theta) as the driving force down the slope, but the component along the plane is mg sin(theta).",
+    quickChecks: [
+      {
+        prompt: "Which force component actually causes the block to accelerate?",
+        answer:
+          "The component parallel to the plane, mg sin(theta), drives the motion.",
+        tip: "Motion direction tells you which component matters for ma.",
+      },
+      {
+        prompt: "What does the normal force balance in the frictionless case?",
+        answer:
+          "The normal force balances the perpendicular component mg cos(theta).",
+        tip: "No acceleration means no imbalance on that axis.",
+      },
+      {
+        prompt: "If the angle increased to 60 degrees, would the acceleration rise or fall?",
+        answer:
+          "It would rise because sin(theta) increases, so mg sin(theta) becomes larger.",
+        tip: "Think about how the parallel component changes with angle.",
+      },
+    ],
+    followUpPrompts: [
+      {
+        label: "Explain the force split",
+        prompt:
+          'Explain why the weight becomes mg sin(theta) and mg cos(theta) for a block on an incline, using simple geometry and no skipped steps.',
+      },
+      {
+        label: "Add friction to the problem",
+        prompt:
+          "Extend the incline problem to include kinetic friction and show how the acceleration equation changes.",
+      },
+      {
+        label: "Quiz me on common errors",
+        prompt:
+          "Ask me three short questions about incline-force diagrams and then grade my answers.",
+      },
+    ],
     tags: ["Incline", "Force components", "Acceleration"],
     steps: [
       {
@@ -320,11 +482,11 @@ export const demoScenarios: DemoScenario[] = [
   },
 ];
 
-export function findScenarioById(id: string) {
+export function findScenarioById(id: string): DemoScenario {
   return demoScenarios.find((scenario) => scenario.id === id) ?? demoScenarios[0];
 }
 
-export function matchScenario(question: string) {
+export function matchScenario(question: string): DemoScenario {
   const normalized = question.toLowerCase();
 
   if (/lens|mirror|image|ray|focal|convex|concave/.test(normalized)) {

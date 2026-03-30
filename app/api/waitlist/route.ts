@@ -12,11 +12,14 @@ type WaitlistEntry = {
 };
 
 const waitlistFile = path.join(process.cwd(), "data", "waitlist.json");
+const allowedRoles = new Set(["Student", "Teacher", "Parent", "Builder"]);
 
 async function readEntries() {
   try {
     const content = await readFile(waitlistFile, "utf8");
-    return JSON.parse(content) as WaitlistEntry[];
+    const parsed = JSON.parse(content) as unknown;
+
+    return Array.isArray(parsed) ? (parsed as WaitlistEntry[]) : [];
   } catch (error) {
     const code =
       typeof error === "object" && error && "code" in error
@@ -35,6 +38,31 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function getRecentCount(entries: WaitlistEntry[]) {
+  const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+  return entries.filter((entry) => {
+    const createdAt = Date.parse(entry.createdAt);
+    return !Number.isNaN(createdAt) && createdAt >= sevenDaysAgo;
+  }).length;
+}
+
+export async function GET() {
+  try {
+    const entries = await readEntries();
+
+    return Response.json({
+      queueSize: entries.length,
+      recentCount: getRecentCount(entries),
+    });
+  } catch {
+    return Response.json(
+      { error: "The waitlist stats are unavailable right now." },
+      { status: 500 },
+    );
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Partial<WaitlistEntry>;
@@ -46,8 +74,16 @@ export async function POST(request: Request) {
       return Response.json({ error: "Please enter your name." }, { status: 400 });
     }
 
+    if (name.length > 80) {
+      return Response.json({ error: "Please keep your name under 80 characters." }, { status: 400 });
+    }
+
     if (!isValidEmail(email)) {
       return Response.json({ error: "Please enter a valid email address." }, { status: 400 });
+    }
+
+    if (!allowedRoles.has(role)) {
+      return Response.json({ error: "Please choose a valid role." }, { status: 400 });
     }
 
     await mkdir(path.dirname(waitlistFile), { recursive: true });
@@ -58,7 +94,8 @@ export async function POST(request: Request) {
       return Response.json(
         {
           existing: true,
-          queueSize: existingIndex + 1,
+          queueSize: entries.length,
+          position: existingIndex + 1,
           message: `This email is already on the waitlist. Current position: ${existingIndex + 1}.`,
         },
         { status: 409 },
@@ -74,10 +111,11 @@ export async function POST(request: Request) {
     };
 
     entries.push(nextEntry);
-    await writeFile(waitlistFile, JSON.stringify(entries, null, 2));
+    await writeFile(waitlistFile, JSON.stringify(entries, null, 2), "utf8");
 
     return Response.json({
       queueSize: entries.length,
+      recentCount: getRecentCount(entries),
       message: `You are in. Current waitlist size: ${entries.length}.`,
     });
   } catch {

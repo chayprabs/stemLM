@@ -7,18 +7,19 @@ import {
   domainPills,
   featureCards,
   problemCards,
+  trustInstitutions,
   timelineSteps,
 } from "@/lib/site-data";
 import {
-  HeroCircuit,
+  HeroWorkspacePreview,
   ShowcaseCollapsedDiagram,
   ShowcaseEquivalentDiagram,
   ShowcaseOriginalDiagram,
 } from "@/components/stem-diagrams";
-import { Reveal } from "@/components/reveal";
+import Reveal from "@/components/reveal";
 import { WaitlistModal } from "@/components/waitlist-modal";
 
-export function HomePage() {
+function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -52,7 +53,7 @@ export function HomePage() {
 
   return (
     <>
-      <nav className={`navbar ${isScrolled ? "scrolled" : ""}`} id="navbar">
+      <nav className={`navbar marketing-navbar ${isScrolled ? "scrolled" : ""}`} id="navbar">
         <div className="container">
           <Link href="/" className="logo">
             <span className="logo-dot" />
@@ -61,25 +62,28 @@ export function HomePage() {
 
           <ul className="nav-links">
             <li>
-              <a href="#how-it-works">How it works</a>
+              <a href="#showcase">Product</a>
             </li>
             <li>
-              <a href="#features">Features</a>
+              <a href="#how-it-works">How it works</a>
             </li>
             <li>
               <a href="#built-for">For students</a>
             </li>
             <li>
-              <Link href="/workspace">Live demo</Link>
+              <a href="#trusted">Colleges</a>
             </li>
           </ul>
 
           <div className="nav-actions">
-            <Link href="/workspace" className="btn-secondary nav-demo">
-              Open demo
+            <a href="#trusted" className="nav-link-quiet">
+              Contact sales
+            </a>
+            <Link href="/workspace" className="nav-link-quiet">
+              Live demo
             </Link>
-            <button className="btn-primary nav-cta" onClick={openWaitlist}>
-              Join waitlist
+            <button className="btn-primary nav-cta nav-cta--compact" onClick={openWaitlist}>
+              Get stemLM
             </button>
           </div>
 
@@ -98,14 +102,17 @@ export function HomePage() {
       </nav>
 
       <div className={`mobile-nav ${menuOpen ? "open" : ""}`} id="mobileNav">
+        <a href="#showcase" className="mobile-nav-link" onClick={closeMenu}>
+          Product
+        </a>
         <a href="#how-it-works" className="mobile-nav-link" onClick={closeMenu}>
           How it works
         </a>
-        <a href="#features" className="mobile-nav-link" onClick={closeMenu}>
-          Features
-        </a>
         <a href="#built-for" className="mobile-nav-link" onClick={closeMenu}>
           For students
+        </a>
+        <a href="#trusted" className="mobile-nav-link" onClick={closeMenu}>
+          Colleges
         </a>
         <Link href="/workspace" className="btn-secondary" onClick={closeMenu}>
           Open live demo
@@ -115,38 +122,65 @@ export function HomePage() {
         </button>
       </div>
 
-      <main>
+      <main className="marketing-page">
         <section className={`hero ${heroLoaded ? "loaded" : ""}`} id="hero">
           <div className="container">
             <div className="hero-content">
               <div className="hero-badge">
                 <span className="dot" />
-                Early access open
+                Trusted by early STEM learners
               </div>
               <h1>
-                The AI your <em>STEM</em> textbook wished it could be
+                Responsible AI tutoring that makes hard STEM problems click
               </h1>
               <p className="hero-sub">
-                stemLM turns ChatGPT, Claude, and Gemini into step-by-step STEM tutors with the
-                right diagram at every stage. Not just the answer. The understanding.
+                stemLM turns ChatGPT, Claude, and Gemini into a diagram-first STEM study workspace
+                with structured reasoning, revision-ready outputs, and visual explanations at every
+                step.
               </p>
+              <div className="hero-proof">
+                <div className="hero-proof-item">
+                  <strong>10,000+</strong>
+                  <span>students already interested</span>
+                </div>
+                <div className="hero-proof-item">
+                  <strong>Physics to mechanics</strong>
+                  <span>topic-aware guided breakdowns</span>
+                </div>
+              </div>
               <div className="hero-cta-group">
                 <div className="hero-cta-buttons">
                   <button className="btn-primary btn-primary--large" onClick={openWaitlist}>
-                    Join the waitlist
+                    Get early access
                   </button>
                   <Link href="/workspace" className="btn-secondary btn-secondary--large">
-                    Open the live workspace
+                    Open the live demo
                   </Link>
                 </div>
                 <span className="hero-cta-note">
-                  Free during early access | Includes a working study demo
+                  Built for JEE prep, engineering coursework, and concept revision
                 </span>
               </div>
             </div>
 
             <div className="hero-visual">
-              <HeroCircuit />
+              <HeroWorkspacePreview />
+            </div>
+          </div>
+        </section>
+
+        <section className="trust-strip" id="trusted">
+          <div className="container">
+            <p className="trust-copy">
+              Trusted by 10,000+ students in top colleges across India, the USA, and China
+            </p>
+            <div className="trust-grid">
+              {trustInstitutions.map((institution) => (
+                <div key={institution.name} className="trust-logo">
+                  <span className="trust-logo-mark">{institution.short}</span>
+                  <span className="trust-logo-name">{institution.name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -360,7 +394,7 @@ export function HomePage() {
         </section>
       </main>
 
-      <footer className="footer">
+      <footer className="footer marketing-footer">
         <div className="container">
           <div className="footer-top">
             <div>
@@ -383,10 +417,12 @@ export function HomePage() {
         </div>
       </footer>
 
-      <WaitlistModal open={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
+      <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
     </>
   );
 }
+
+export default HomePage;
 
 function ProblemIcon({ icon }: { icon: "cross" | "warning" }) {
   if (icon === "warning") {
