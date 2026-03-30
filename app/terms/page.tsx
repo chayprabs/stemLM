@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import { WaitlistModal } from '@/components/waitlist-modal'
@@ -10,15 +11,15 @@ export default function TermsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#FFFFFF]">
       <Nav onOpenModal={() => setIsModalOpen(true)} />
 
-      <article className="mx-auto max-w-[720px] px-5 py-16 md:px-12 md:py-24">
+      <article className="mx-auto max-w-[720px] px-5 py-16 md:px-12 md:py-20">
         <Link
           href="/"
-          className="mb-8 inline-flex items-center gap-1.5 text-[13px] text-[#0EA5A0] transition-colors duration-150 hover:text-[#0D9490]"
+          className="mb-8 inline-flex items-center gap-2 text-[13px] text-[#0EA5A0] transition-colors duration-150 hover:text-[#0D9490]"
         >
-          <span>&larr;</span>
+          <ArrowLeft aria-hidden="true" size={16} strokeWidth={1.5} />
           <span>Back to home</span>
         </Link>
 

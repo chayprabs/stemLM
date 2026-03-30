@@ -17,7 +17,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="min-h-screen bg-[#FFFFFF]">
       <Nav onOpenModal={() => setIsModalOpen(true)} />
       <Hero onOpenModal={() => setIsModalOpen(true)} />
       <UniversityStrip />

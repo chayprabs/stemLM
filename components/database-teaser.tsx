@@ -116,7 +116,7 @@ export function DatabaseTeaser() {
             );
           })}
 
-          <span className="ml-8 inline-block h-3.5 w-px animate-pulse bg-[#0EA5A0]" />
+          <span className="ml-8 inline-block h-4 w-px animate-pulse bg-[#0EA5A0]" />
         </div>
       </div>
     </section>
