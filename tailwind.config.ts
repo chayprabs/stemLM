@@ -23,9 +23,9 @@ const config = {
         'text-2-light': '#64748B',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        wordmark: ['Geist', 'Inter', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        wordmark: ['var(--font-geist-sans)', 'Inter', 'sans-serif'],
+        mono: ['var(--font-mono)', 'Courier New', 'monospace'],
       },
       borderRadius: {
         sm: '6px',

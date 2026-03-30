@@ -1,69 +1,71 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react'
+import { CircleCheck, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface WaitlistModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState('')
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!isOpen) {
-      setEmail('')
-      setSubmitted(false)
-      setError('')
+      setEmail("");
+      setSubmitted(false);
+      setError("");
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   if (!isOpen) {
-    return null
+    return null;
   }
 
   function handleSubmit() {
     if (!emailRegex.test(email.trim())) {
-      setError('Please enter a valid email address')
-      return
+      setError("Please enter a valid email address");
+      return;
     }
 
-    setSubmitted(true)
-    setError('')
+    setSubmitted(true);
+    setError("");
   }
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0C0C0F]/60 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-[420px] rounded-[16px] border border-[#E2E8F0] bg-white p-8"
+        className="relative w-full max-w-[420px] rounded-lg border border-[#E2E8F0] bg-[#FFFFFF] p-8"
         onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 cursor-pointer text-lg leading-none text-[#4A4A5A] transition-colors hover:text-[#64748B]"
+          className="absolute right-4 top-4 text-[#4A4A5A] transition-colors duration-150 hover:text-[#64748B]"
+          aria-label="Close waitlist modal"
         >
-          &#10005;
+          <X aria-hidden="true" size={18} strokeWidth={1.5} />
         </button>
 
         {submitted ? (
-          <div className="translate-y-0 opacity-100 transition-all duration-300">
-            <div className="flex items-center justify-center gap-2 text-[15px] font-medium text-[#22C55E]">
-              <span>&#10003;</span>
-              <span>You&apos;re on the list. We&apos;ll be in touch.</span>
-            </div>
+          <div className="flex items-center justify-center gap-2 text-base font-medium text-[#22C55E]">
+            <CircleCheck aria-hidden="true" size={16} strokeWidth={1.5} />
+            <span>You&apos;re on the list. We&apos;ll be in touch.</span>
           </div>
         ) : (
           <>
-            <h2 className="mb-2 text-[22px] font-medium text-[#0F1117]">Join the waitlist</h2>
-            <p className="mb-6 text-[14px] leading-[1.6] text-[#64748B]">
+            <h2 className="mb-2 text-xl font-medium tracking-[-0.3px] text-[#0F1117]">
+              Join the waitlist
+            </h2>
+            <p className="mb-6 text-sm text-[#64748B]">
               Be the first to access stemLM. We&apos;re opening spots gradually for
               students in private beta.
             </p>
@@ -71,17 +73,17 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
               type="email"
               value={email}
               onChange={(event) => {
-                setEmail(event.target.value)
-                setError('')
+                setEmail(event.target.value);
+                setError("");
               }}
               placeholder="your@email.com"
-              className="mb-3 w-full rounded-[10px] border border-[#E2E8F0] bg-[#F8F9FC] px-4 py-3 text-[14px] text-[#0F1117] placeholder:text-[#4A4A5A] focus:outline-none focus:ring-[1.5px] focus:ring-[#0EA5A0]"
+              className="mb-3 w-full rounded-md border border-[#E2E8F0] bg-[#F8F9FC] px-4 py-3 text-sm text-[#0F1117] placeholder:text-[#4A4A5A] focus:outline-none focus:ring-[1.5px] focus:ring-[#0EA5A0]"
             />
-            {error ? <p className="mb-3 text-[12px] text-[#EF4444]">{error}</p> : null}
+            {error ? <p className="mb-3 text-xs text-[#EF4444]">{error}</p> : null}
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full rounded-[10px] bg-[#0EA5A0] py-3 text-[14px] font-medium text-white transition-colors hover:bg-[#0D9490]"
+              className="w-full rounded-md bg-[#0EA5A0] py-3 text-sm font-medium text-[#F0F0F2] transition-colors duration-150 hover:bg-[#0D9490]"
             >
               Get early access
             </button>
@@ -89,5 +91,5 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
         )}
       </div>
     </div>
-  )
+  );
 }
