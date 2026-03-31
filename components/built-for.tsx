@@ -1,18 +1,18 @@
 const cards = [
   {
     number: "01",
-    title: "JEE, NEET, and competitive exam students",
-    body: "The product is strongest where visual step-by-step reasoning is the difference between solving and guessing.",
+    title: "Engineering & CS undergrads",
+    body: "When lectures move fast and worked examples skip the logic, stemLM breaks each problem into the exact steps, formulas, and reasoning you need to actually understand it.",
   },
   {
     number: "02",
-    title: "B.Tech, B.Sc, and university students",
-    body: "Assignments, revision, lab work, and exam prep all benefit from structured explanations more than raw answers.",
+    title: "Students preparing for exams that reward method",
+    body: "From internals to end-sems, stemLM follows the topic-specific approach your syllabus expects, so you learn how to reach the answer, not just what it is.",
   },
   {
     number: "03",
-    title: "Anyone learning STEM with AI",
-    body: "If your AI regularly skips the part where you get confused, stemLM is built exactly for that gap.",
+    title: "Anyone tired of answers they still can't explain",
+    body: "If you've ever copied an AI solution and still felt lost, stemLM turns it into something you can follow, question, and confidently explain on your own.",
   },
 ] as const;
 
@@ -29,7 +29,7 @@ export function BuiltFor() {
           </div>
 
           <h2 className="text-[34px] font-medium tracking-[-0.5px] text-[#0F1117]">
-            Built for students who want to understand, not just pass
+            Built for the student who needs the missing steps, not just the final answer.
           </h2>
         </div>
 
