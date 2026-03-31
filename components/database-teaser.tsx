@@ -1,56 +1,257 @@
 "use client";
 
 import { Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const question = "Design a 2-bit synchronous counter using JK flip-flops";
-const frameworkTag = "STEM-ECE-07-03-02";
+const question = `Implement a 4-bit ripple carry adder using full adder subcircuits.
+Derive the Boolean expressions, draw the gate-level circuit,
+and determine the maximum propagation delay if each gate has 10ns delay.`;
 
-const stateRows = [
-  { present: "00", next: "01" },
-  { present: "01", next: "10" },
-  { present: "10", next: "11" },
-  { present: "11", next: "00" },
+const frameworkTag = "STEM-ECE-04-02-07";
+
+const stepTitles = [
+  "Full Adder Logic",
+  "Circuit Diagram",
+  "Propagation Delay Analysis",
+  "Result",
 ] as const;
 
-const steps = [
-  {
-    title: "Identify the states",
-    body: "A 2-bit counter cycles through 4 states: 00 -> 01 -> 10 -> 11 -> 00",
-  },
-  {
-    title: "Build the state transition table",
-    table: true,
-  },
-  {
-    title: "Derive JK inputs",
-    bullets: [
-      "For Q0: J0=1, K0=1 (toggles every clock)",
-      "For Q1: J1=Q0, K1=Q0",
-    ],
-  },
-  {
-    title: "Final answer",
-    body: "Connect J0=K0=1. Connect J1=K1=Q0. Clock both flip-flops simultaneously.",
-  },
-] as const;
+const TYPE_SPEED_MS = 22;
+const POPUP_DELAY_MS = 320;
+const POPUP_SETTLE_MS = 420;
+const STEP_DELAY_MS = 700;
+const HOLD_DURATION_MS = 3600;
 
-const TYPE_SPEED_MS = 50;
-const MATCH_DURATION_MS = 800;
-const STEP_DELAY_MS = 600;
-const HOLD_DURATION_MS = 3000;
+function RippleCarryDiagram() {
+  const blockXs = [20, 95, 170, 245];
+  const boxY = 74;
+  const boxWidth = 50;
+  const boxHeight = 44;
+  const centerY = boxY + boxHeight / 2;
+
+  return (
+    <svg
+      viewBox="0 0 320 176"
+      className="h-auto w-full"
+      role="img"
+      aria-label="4-bit ripple carry adder circuit"
+    >
+      <rect x="0" y="0" width="320" height="176" rx="14" fill="#FFFFFF" />
+
+      {blockXs.map((x, index) => (
+        <g key={`fa-${index}`}>
+          <rect
+            x={x}
+            y={boxY}
+            width={boxWidth}
+            height={boxHeight}
+            rx="10"
+            fill="#F8FAFC"
+            stroke="#CBD5E1"
+            strokeWidth="1.5"
+          />
+          <text
+            x={x + boxWidth / 2}
+            y={boxY + 18}
+            fill="#0F172A"
+            fontSize="11"
+            fontWeight="600"
+            textAnchor="middle"
+          >
+            {`FA${index}`}
+          </text>
+          <text
+            x={x + boxWidth / 2}
+            y={boxY + 32}
+            fill="#64748B"
+            fontSize="9"
+            textAnchor="middle"
+          >
+            Full Adder
+          </text>
+
+          <line
+            x1={x + 14}
+            y1={42}
+            x2={x + 14}
+            y2={boxY}
+            stroke="#334155"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <line
+            x1={x + 36}
+            y1={42}
+            x2={x + 36}
+            y2={boxY}
+            stroke="#334155"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <text
+            x={x + 14}
+            y={31}
+            fill="#334155"
+            fontSize="10"
+            fontWeight="500"
+            textAnchor="middle"
+          >
+            {`A${index}`}
+          </text>
+          <text
+            x={x + 36}
+            y={31}
+            fill="#334155"
+            fontSize="10"
+            fontWeight="500"
+            textAnchor="middle"
+          >
+            {`B${index}`}
+          </text>
+
+          <line
+            x1={x + boxWidth / 2}
+            y1={boxY + boxHeight}
+            x2={x + boxWidth / 2}
+            y2={146}
+            stroke="#334155"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <text
+            x={x + boxWidth / 2}
+            y={160}
+            fill="#334155"
+            fontSize="10"
+            fontWeight="500"
+            textAnchor="middle"
+          >
+            {`S${index}`}
+          </text>
+        </g>
+      ))}
+
+      <line
+        x1={2}
+        y1={centerY}
+        x2={blockXs[0]}
+        y2={centerY}
+        stroke="#0EA5A0"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+      />
+      <text x={4} y={centerY - 8} fill="#0EA5A0" fontSize="10" fontWeight="600">
+        Cin
+      </text>
+
+      {blockXs.map((x, index) => {
+        const lineStart = x + boxWidth;
+        const lineEnd = index === blockXs.length - 1 ? 318 : blockXs[index + 1];
+
+        return (
+          <g key={`carry-${index}`}>
+            <circle cx={x} cy={centerY} r="3" fill="#0EA5A0" />
+            <circle cx={lineStart} cy={centerY} r="3" fill="#0EA5A0" />
+            <line
+              x1={lineStart}
+              y1={centerY}
+              x2={lineEnd}
+              y2={centerY}
+              stroke="#0EA5A0"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+            />
+            {index < blockXs.length - 1 ? (
+              <text
+                x={(lineStart + lineEnd) / 2}
+                y={centerY - 8}
+                fill="#0EA5A0"
+                fontSize="10"
+                fontWeight="600"
+                textAnchor="middle"
+              >
+                {`C${index + 1}`}
+              </text>
+            ) : (
+              <text
+                x={316}
+                y={centerY - 8}
+                fill="#0EA5A0"
+                fontSize="10"
+                fontWeight="600"
+                textAnchor="end"
+              >
+                Cout
+              </text>
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function StepContent({ index }: { index: number }) {
+  if (index === 0) {
+    return (
+      <div className="mt-3 rounded-xl bg-[#F8FAFC] px-3 py-3 font-mono text-[12px] leading-[1.8] text-[#334155]">
+        <p>
+          Sum = A <span aria-hidden="true">&oplus;</span> B{" "}
+          <span aria-hidden="true">&oplus;</span> Cin
+        </p>
+        <p className="mt-2">
+          Cout = (A<span aria-hidden="true">&middot;</span>B) + (B
+          <span aria-hidden="true">&middot;</span>Cin) + (A
+          <span aria-hidden="true">&middot;</span>Cin)
+        </p>
+      </div>
+    );
+  }
+
+  if (index === 1) {
+    return (
+      <div className="mt-3">
+        <p className="mb-3 text-[13px] leading-[1.7] text-[#475569]">
+          Four full adder stages are chained so each carry-out feeds the next
+          stage&apos;s carry-in.
+        </p>
+        <div className="overflow-hidden rounded-[14px] border border-[#E2E8F0] bg-white p-2">
+          <RippleCarryDiagram />
+        </div>
+      </div>
+    );
+  }
+
+  if (index === 2) {
+    return (
+      <div className="mt-3 space-y-2 text-[13px] leading-[1.7] text-[#475569]">
+        <p>Each full adder introduces 2-gate delay for Sum, 2-gate delay for Carry.</p>
+        <p>Ripple carry chain: 4 x 2 = 8 gate delays for final carry.</p>
+        <p className="font-medium text-[#0F1117]">Total max delay = 8 x 10ns = 80ns</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-3 space-y-2 text-[13px] leading-[1.7] text-[#475569]">
+      <p>4-bit RCA operational. Max propagation delay: 80ns.</p>
+      <p>For faster addition, consider Carry Lookahead Adder (CLA).</p>
+    </div>
+  );
+}
 
 export function DatabaseTeaser() {
   const [typedLength, setTypedLength] = useState(0);
-  const [isMatching, setIsMatching] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [visibleSteps, setVisibleSteps] = useState(0);
   const [cycle, setCycle] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
 
     setTypedLength(0);
-    setIsMatching(false);
+    setIsPopupVisible(false);
     setVisibleSteps(0);
 
     for (let index = 1; index <= question.length; index += 1) {
@@ -58,16 +259,16 @@ export function DatabaseTeaser() {
     }
 
     const typingEnd = question.length * TYPE_SPEED_MS;
-    const matchingStart = typingEnd + 120;
-    const matchingEnd = matchingStart + MATCH_DURATION_MS;
-    const stepsStart = matchingEnd + 120;
-    const loopRestart = stepsStart + steps.length * STEP_DELAY_MS + HOLD_DURATION_MS;
+    const popupStart = typingEnd + POPUP_DELAY_MS;
+    const stepsStart = popupStart + POPUP_SETTLE_MS;
+    const loopRestart = stepsStart + stepTitles.length * STEP_DELAY_MS + HOLD_DURATION_MS;
 
-    timers.push(setTimeout(() => setIsMatching(true), matchingStart));
-    timers.push(setTimeout(() => setIsMatching(false), matchingEnd));
+    timers.push(setTimeout(() => setIsPopupVisible(true), popupStart));
 
-    steps.forEach((_, index) => {
-      timers.push(setTimeout(() => setVisibleSteps(index + 1), stepsStart + index * STEP_DELAY_MS));
+    stepTitles.forEach((_, index) => {
+      timers.push(
+        setTimeout(() => setVisibleSteps(index + 1), stepsStart + index * STEP_DELAY_MS),
+      );
     });
 
     timers.push(setTimeout(() => setCycle((current) => current + 1), loopRestart));
@@ -77,15 +278,26 @@ export function DatabaseTeaser() {
     };
   }, [cycle]);
 
+  useEffect(() => {
+    if (!scrollRef.current) {
+      return;
+    }
+
+    if (!isPopupVisible) {
+      scrollRef.current.scrollTop = 0;
+      return;
+    }
+
+    scrollRef.current.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: visibleSteps > 1 ? "smooth" : "auto",
+    });
+  }, [isPopupVisible, visibleSteps, cycle]);
+
   const typedQuestion = question.slice(0, typedLength);
-  const hasFinishedTyping = typedLength === question.length;
-  const hasMatchedFramework = !isMatching && visibleSteps > 0;
 
   return (
-    <section
-      id="extension"
-      className="relative overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F8FAFC_100%)] px-5 py-16 md:px-12 md:py-24"
-    >
+    <section id="extension" className="bg-white px-5 py-16 md:px-12 md:py-24">
       <style jsx>{`
         @media (prefers-reduced-motion: no-preference) {
           @keyframes demo-cursor {
@@ -97,16 +309,6 @@ export function DatabaseTeaser() {
             46%,
             100% {
               opacity: 0;
-            }
-          }
-
-          @keyframes demo-shimmer {
-            0% {
-              background-position: 200% 0;
-            }
-
-            100% {
-              background-position: -200% 0;
             }
           }
 
@@ -126,189 +328,197 @@ export function DatabaseTeaser() {
             animation: demo-cursor 1s steps(1, end) infinite;
           }
 
-          .demo-shimmer {
-            background-image: linear-gradient(
-              90deg,
-              rgba(14, 165, 160, 0.06) 0%,
-              rgba(14, 165, 160, 0.18) 48%,
-              rgba(14, 165, 160, 0.06) 100%
-            );
-            background-size: 200% 100%;
-            animation: demo-shimmer 1.2s linear infinite;
-          }
-
           .demo-step-in {
             animation: demo-step-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
           }
         }
       `}</style>
 
-      <div className="pointer-events-none absolute inset-x-0 top-10 h-72 bg-[radial-gradient(circle_at_20%_0%,rgba(14,165,160,0.08),transparent_34%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.06),transparent_28%)]" />
-
-      <div className="relative mx-auto max-w-[1100px]">
-        <div className="mb-12 text-center">
+      <div className="mx-auto max-w-[1100px]">
+        <div className="mb-12 max-w-[760px]">
           <p className="mb-3 text-[11px] font-medium uppercase tracking-[1px] text-[#0EA5A0]">
-            Interactive demo
+            See it work
           </p>
           <h2 className="mb-4 text-[34px] font-medium leading-tight tracking-[-0.5px] text-[#0F1117] md:text-[38px]">
-            See stemLM solve a Digital Electronics question.
+            Watch stemLM break down a real ECE problem.
           </h2>
-          <p className="mx-auto max-w-[600px] text-[16px] leading-[1.7] text-[#64748B]">
-            A realistic in-product walkthrough of framework matching and
-            step-by-step reasoning for sequential logic problems.
+          <p className="max-w-[620px] text-[16px] leading-[1.7] text-[#64748B]">
+            Paste any STEM question. Get a framework-matched, step-by-step
+            solution right in your browser.
           </p>
         </div>
 
-        <div className="grid items-start gap-6 lg:grid-cols-[0.96fr_1.04fr]">
-          <div className="rounded-[26px] border border-[#E2E8F0] bg-white/90 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur-sm md:p-6">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-medium text-[#0F1117]">stemLM input</p>
-                <p className="mt-1 text-xs text-[#64748B]">
-                  Ask a problem the way a student actually would.
-                </p>
-              </div>
-              <span className="rounded-full border border-[#D7F3F0] bg-[#0EA5A012] px-3 py-1 text-[11px] font-medium text-[#0EA5A0]">
-                Digital Electronics
-              </span>
+        <div className="relative overflow-hidden rounded-[30px] border border-[#E2E8F0] bg-[#F5F8FC] shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
+          <div className="flex h-12 items-center justify-between border-b border-[#E2E8F0] bg-white/80 px-4 backdrop-blur-sm">
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#E2E8F0]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#CBD5E1]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#94A3B8]" />
             </div>
 
-            <div className="rounded-[22px] border border-[#DCE5EE] bg-[#FBFCFD] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
-              <div className="mb-3 flex items-center gap-2 text-xs text-[#64748B]">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0EA5A012] text-[#0EA5A0]">
-                  <Sparkles aria-hidden="true" size={14} strokeWidth={1.7} />
-                </span>
-                <span>Prompt stemLM</span>
-              </div>
+            <div className="mx-4 flex h-8 flex-1 items-center rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-4 text-xs text-[#64748B]">
+              campus.university.edu/courses/ece-304/week-4
+            </div>
 
-              <div className="min-h-[148px] rounded-[18px] border border-[#E2E8F0] bg-white px-4 py-4 text-[17px] leading-[1.8] text-[#0F1117] shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
-                <span>{typedQuestion}</span>
-                <span
-                  className={`demo-cursor ml-0.5 inline-block h-[1.1em] w-[2px] translate-y-1 bg-[#0EA5A0] ${
-                    hasFinishedTyping ? "opacity-60" : ""
-                  }`}
-                />
-              </div>
-
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-[#F1F5F9] px-3 py-1 text-xs text-[#64748B]">
-                  Sequential logic
-                </span>
-                <span className="rounded-full bg-[#F1F5F9] px-3 py-1 text-xs text-[#64748B]">
-                  JK flip-flops
-                </span>
-              </div>
-
-              <div className="mt-5 rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3">
-                {isMatching ? (
-                  <div className="flex items-center gap-3">
-                    <div className="demo-shimmer h-9 flex-1 rounded-xl border border-[#D7F3F0]" />
-                    <span className="text-xs font-medium text-[#0EA5A0]">
-                      Matching framework...
-                    </span>
-                  </div>
-                ) : hasMatchedFramework ? (
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-xs text-[#64748B]">Matched framework</span>
-                    <span className="rounded-full bg-[#0EA5A012] px-3 py-1 font-mono text-xs text-[#0EA5A0]">
-                      {frameworkTag}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="text-xs text-[#94A3B8]">
-                    Waiting for the full question before matching the framework.
-                  </div>
-                )}
-              </div>
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-all duration-300 ${
+                isPopupVisible
+                  ? "border-[#0EA5A0] bg-[#0EA5A012] text-[#0EA5A0]"
+                  : "border-[#E2E8F0] bg-white text-[#94A3B8]"
+              }`}
+            >
+              <Sparkles aria-hidden="true" size={16} strokeWidth={1.7} />
             </div>
           </div>
 
-          <div className="rounded-[26px] border border-[#E2E8F0] bg-white/95 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur-sm md:p-6">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-medium text-[#0F1117]">Structured solution</p>
-                <p className="mt-1 text-xs text-[#64748B]">
-                  stemLM reveals the reasoning in the order a student can follow.
+          <div className="relative min-h-[680px] overflow-hidden">
+            <div className="grid min-h-[680px] lg:grid-cols-[220px_1fr]">
+              <aside className="border-r border-[#E2E8F0] bg-[#F8FAFC]/70 px-5 py-6">
+                <p className="text-[11px] font-medium uppercase tracking-[1px] text-[#94A3B8]">
+                  Course modules
                 </p>
-              </div>
-              {hasMatchedFramework ? (
-                <span className="rounded-full bg-[#0EA5A012] px-3 py-1 font-mono text-xs text-[#0EA5A0]">
-                  {frameworkTag}
-                </span>
-              ) : (
-                <span className="rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1 text-xs text-[#94A3B8]">
-                  {isMatching ? "Matching..." : "Framework pending"}
-                </span>
-              )}
-            </div>
-
-            <div className="space-y-4">
-              {steps.slice(0, visibleSteps).map((step, index) => (
-                <article
-                  key={`${cycle}-${step.title}`}
-                  className="demo-step-in rounded-[20px] border border-[#E2E8F0] bg-[#FFFFFF] px-4 py-4 shadow-[0_8px_20px_rgba(15,23,42,0.04)]"
-                >
-                  <div className="mb-3 flex items-start gap-4">
-                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#0EA5A012] text-sm font-semibold text-[#0EA5A0]">
-                      {index + 1}
+                <div className="mt-4 space-y-3">
+                  {[
+                    "Boolean algebra refresh",
+                    "Combinational logic design",
+                    "Arithmetic circuits",
+                    "Sequential building blocks",
+                    "Timing and hazards",
+                  ].map((item, index) => (
+                    <div
+                      key={item}
+                      className={`rounded-xl border px-3 py-3 text-sm ${
+                        index === 2
+                          ? "border-[#0EA5A0] bg-[#0EA5A012] text-[#0EA5A0]"
+                          : "border-[#E2E8F0] bg-white/70 text-[#64748B]"
+                      }`}
+                    >
+                      {item}
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="text-[15px] font-medium text-[#0F1117]">
-                        {step.title}
-                      </h3>
+                  ))}
+                </div>
+              </aside>
 
-                      {"body" in step ? (
-                        <p className="mt-2 text-sm leading-[1.7] text-[#475569]">
-                          {step.body}
+              <div className="space-y-5 px-5 py-6 md:px-8 md:py-8">
+                <div className="rounded-[24px] border border-[#E2E8F0] bg-white/80 p-6 shadow-[0_12px_36px_rgba(15,23,42,0.04)]">
+                  <p className="text-[11px] font-medium uppercase tracking-[1px] text-[#0EA5A0]">
+                    ECE 304 - Digital Electronics
+                  </p>
+                  <h3 className="mt-3 text-[28px] font-medium tracking-[-0.4px] text-[#0F1117]">
+                    Arithmetic Circuits Problem Lab
+                  </h3>
+                  <p className="mt-3 max-w-[620px] text-sm leading-[1.7] text-[#64748B]">
+                    Submit a circuit-design question and compare your working
+                    with a fully structured breakdown.
+                  </p>
+
+                  <div className="mt-6 rounded-[22px] border border-[#DCE5EE] bg-[#F8FAFC] p-4">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-medium text-[#0F1117]">
+                          Ask about this module
                         </p>
-                      ) : null}
+                        <p className="mt-1 text-xs text-[#64748B]">
+                          Question drafted by student in the course portal.
+                        </p>
+                      </div>
+                      <span className="rounded-full bg-[#EFF6FF] px-3 py-1 text-xs text-[#3B82F6]">
+                        Draft
+                      </span>
+                    </div>
 
-                      {"bullets" in step ? (
-                        <div className="mt-3 space-y-2 text-sm leading-[1.7] text-[#475569]">
-                          {step.bullets.map((bullet) => (
-                            <p key={bullet}>{bullet}</p>
-                          ))}
-                        </div>
-                      ) : null}
-
-                      {"table" in step ? (
-                        <div className="mt-3 overflow-hidden rounded-[16px] border border-[#E2E8F0] bg-[#F8FAFC]">
-                          <table className="w-full text-left text-sm">
-                            <thead className="bg-white text-[#0F1117]">
-                              <tr>
-                                <th className="px-4 py-3 font-medium">
-                                  Present State (Q1 Q0)
-                                </th>
-                                <th className="px-4 py-3 font-medium">
-                                  Next State (Q1+ Q0+)
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {stateRows.map((row) => (
-                                <tr
-                                  key={`${row.present}-${row.next}`}
-                                  className="border-t border-[#E2E8F0] text-[#475569]"
-                                >
-                                  <td className="px-4 py-3">{row.present}</td>
-                                  <td className="px-4 py-3">{row.next}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      ) : null}
+                    <div className="min-h-[160px] rounded-[18px] border border-[#E2E8F0] bg-white px-4 py-4 text-[15px] leading-[1.8] text-[#0F1117] shadow-[0_8px_22px_rgba(15,23,42,0.03)]">
+                      <span className="whitespace-pre-wrap">{typedQuestion}</span>
+                      <span className="demo-cursor ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-1 bg-[#0EA5A0]" />
                     </div>
                   </div>
-                </article>
-              ))}
-
-              {visibleSteps === 0 ? (
-                <div className="rounded-[20px] border border-dashed border-[#D8E3EC] bg-[#FBFCFD] px-4 py-6 text-sm text-[#94A3B8]">
-                  Solution steps will appear here after stemLM matches the right
-                  Digital Electronics framework.
                 </div>
-              ) : null}
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-[20px] border border-[#E2E8F0] bg-white/70 p-5">
+                    <p className="text-xs font-medium uppercase tracking-[1px] text-[#94A3B8]">
+                      This week
+                    </p>
+                    <p className="mt-3 text-sm leading-[1.7] text-[#64748B]">
+                      Focus on adders, subtractors, and timing paths before the
+                      lab practical.
+                    </p>
+                  </div>
+                  <div className="rounded-[20px] border border-[#E2E8F0] bg-white/70 p-5">
+                    <p className="text-xs font-medium uppercase tracking-[1px] text-[#94A3B8]">
+                      Notes
+                    </p>
+                    <p className="mt-3 text-sm leading-[1.7] text-[#64748B]">
+                      Review carry propagation and identify the longest critical
+                      path through the design.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(248,250,252,0.12),rgba(248,250,252,0.46))] backdrop-blur-[1.8px]" />
+
+            <div
+              className={`absolute left-4 right-4 top-6 z-20 w-auto rounded-[12px] border border-[#DCE5EE] bg-white shadow-[0_28px_70px_rgba(15,23,42,0.24)] transition-all duration-500 ease-out sm:left-auto sm:right-6 sm:w-[380px] ${
+                isPopupVisible
+                  ? "translate-y-0 opacity-100"
+                  : "-translate-y-8 opacity-0"
+              }`}
+            >
+              <div className="flex h-10 items-center justify-between rounded-t-[12px] bg-[#0EA5A0] px-4 text-white">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-md bg-white/20 text-[10px] font-semibold">
+                    S
+                  </span>
+                  <span className="font-wordmark text-sm font-semibold">stemLM</span>
+                </div>
+                <span className="text-[10px] uppercase tracking-[1px] text-white/80">
+                  Extension
+                </span>
+              </div>
+
+              <div className="p-4">
+                <div className="mb-4 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-[#0EA5A012] px-3 py-1 text-[11px] font-medium text-[#0EA5A0]">
+                    Framework matched
+                  </span>
+                  <span className="rounded-full border border-[#D7F3F0] px-3 py-1 font-mono text-[11px] text-[#0EA5A0]">
+                    {frameworkTag}
+                  </span>
+                </div>
+
+                <div ref={scrollRef} className="max-h-[430px] space-y-3 overflow-y-auto pr-1">
+                  {visibleSteps === 0 ? (
+                    <div className="rounded-[12px] border border-dashed border-[#D8E3EC] bg-[#FBFCFD] px-4 py-4 text-sm text-[#94A3B8]">
+                      Building the structured solution...
+                    </div>
+                  ) : null}
+
+                  {stepTitles.slice(0, visibleSteps).map((title, index) => (
+                    <article
+                      key={`${cycle}-${title}`}
+                      className="demo-step-in rounded-[14px] border border-[#E2E8F0] bg-[#FCFDFE] p-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#0EA5A012] text-sm font-semibold text-[#0EA5A0]">
+                          {index + 1}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-[14px] font-semibold text-[#0F1117]">
+                            {title}
+                          </h3>
+                          <StepContent index={index} />
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t border-[#E2E8F0] bg-[#FAFBFC] px-4 py-3 text-[11px] text-[#94A3B8]">
+                Powered by stemLM
+              </div>
             </div>
           </div>
         </div>

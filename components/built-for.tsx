@@ -29,7 +29,7 @@ export function BuiltFor() {
           </div>
 
           <h2 className="text-[34px] font-medium tracking-[-0.5px] text-[#0F1117]">
-            Built for the student who needs the missing steps, not just the final answer.
+            Built for students who need the missing steps, not just the answer.
           </h2>
         </div>
 

@@ -9,44 +9,25 @@ type Step = {
 const steps: Step[] = [
   {
     number: "1",
-    title: "Type your question into any AI",
-    body: "stemLM works on top of ChatGPT, Claude, and Gemini without changing your normal study workflow.",
-    tag: "Platform agnostic",
-    accent: false,
+    title: "Type your question into ChatGPT, Claude, or Gemini",
+    body: "Nothing changes about how you work.",
   },
   {
     number: "2",
-    title: "Activate stemLM mode",
-    body: "One click applies a subject-aware solving framework before the answer is generated.",
-    tag: "One click workflow",
-    accent: false,
+    title: "Click stemLM",
+    body: "One click. No setup. No tab switching.",
   },
   {
     number: "3",
-    title: "stemLM identifies the exact topic",
-    body: "The system maps your question into a chapter, topic, and subtopic key so the answer structure matches the problem type.",
-    tag: "PHY → Circuits → Parallel Networks → STEM-EL-RC-001",
+    title: "stemLM matches the exact topic and framework",
+    body: "The system maps your question to a chapter, topic, and subtopic key.",
+    tag: "PHY \u2192 Circuits \u2192 Parallel Networks \u2192 STEM-EL-RC-001",
     accent: true,
   },
   {
     number: "4",
-    title: "The AI follows the playbook",
-    body: "Instead of loose prose, the model returns steps, formulas, and the right approach at each point of the solution.",
-  },
-  {
-    number: "5",
-    title: "The guided panel opens",
-    body: "The stemLM panel organises the response into steps so you can move through the reasoning without losing context.",
-  },
-  {
-    number: "6",
-    title: "Each step is structured",
-    body: "Every step shows the method, the formula, and the working. No skipped stages, no ambiguous jumps.",
-  },
-  {
-    number: "7",
-    title: "Interact, ask follow-ups, and export",
-    body: "Select any step to ask a focused follow-up. Export the full solution as a clean outline for revision.",
+    title: "Get a structured, step-by-step solution",
+    body: "Every step shows the method, the formula, and the working. No skipped stages.",
   },
 ] as const;
 

@@ -21,48 +21,38 @@ interface HeroProps {
 
 const questions = [
   {
-    chip: "Projectile motion range",
-    userMessage: "A particle is projected at 30 deg with v0 = 40 m/s. Find the horizontal range.",
-    aiPartial: "The horizontal range can be found using the projectile-motion framework.",
-    topic: "Projectile motion",
-    key: "STEM-PHY-03-07-02",
-    subject: "Physics",
-    steps: [
-      { n: "01", title: "Resolve components", desc: "u_x = 40cos30 deg = 34.6 m/s" },
-      { n: "02", title: "Time of flight", desc: "T = 2u_y/g = 4.08 s" },
-      { n: "03", title: "Apply formula", desc: "R = u^2 sin 2theta / g" },
-      { n: "04", title: "Substitute", desc: "R = 141.4 m" },
-    ],
+    chip: "Derive the time complexity of Dijkstra's algorithm using a min-heap",
   },
   {
-    chip: "Solve x^2 - 5x + 6 = 0",
-    userMessage: "Solve the quadratic equation x^2 - 5x + 6 = 0.",
-    aiPartial: "This quadratic can be solved cleanly by factorisation.",
-    topic: "Quadratic equations",
-    key: "STEM-MATH-01-04-01",
-    subject: "Mathematics",
-    steps: [
-      { n: "01", title: "Identify coefficients", desc: "a = 1, b = -5, c = 6" },
-      { n: "02", title: "Find factors", desc: "p + q = -5, pq = 6" },
-      { n: "03", title: "Factorise", desc: "(x - 2)(x - 3) = 0" },
-      { n: "04", title: "Solve", desc: "x = 2 or x = 3" },
-    ],
+    chip: "Find the Thevenin equivalent of a circuit with dependent sources",
   },
   {
-    chip: "Time complexity of merge sort",
-    userMessage: "What is the time complexity of merge sort and why?",
-    aiPartial: "Merge sort runs in O(n log n) because each level merges O(n) work.",
-    topic: "Merge sort",
-    key: "STEM-CS-02-08-01",
-    subject: "Computer science",
-    steps: [
-      { n: "01", title: "Divide phase", desc: "Split array across O(log n) levels" },
-      { n: "02", title: "Merge phase", desc: "Each level processes O(n) elements" },
-      { n: "03", title: "Combine", desc: "O(n) times O(log n)" },
-      { n: "04", title: "Result", desc: "T(n) = O(n log n)" },
-    ],
+    chip: "Prove that NP-complete problems are closed under polynomial reduction",
   },
 ] as const;
+
+const overlayCard = {
+  key: "STEM-CS-06-03-02",
+  title: "Graph algorithms \u2014 Shortest path",
+  subject: "Computer Science",
+  steps: [
+    {
+      n: "01",
+      title: "Define the priority queue structure",
+      desc: "Min-heap with (distance, vertex) pairs",
+    },
+    {
+      n: "02",
+      title: "Relaxation condition",
+      desc: "if dist[u] + w(u,v) < dist[v]: update dist[v]",
+    },
+    {
+      n: "03",
+      title: "Complexity breakdown",
+      desc: "O((V + E) log V) \u2014 V extractions \u00d7 log V each",
+    },
+  ],
+} as const;
 
 function scrollToSection(sectionId: string) {
   const element = document.getElementById(sectionId);
@@ -70,6 +60,10 @@ function scrollToSection(sectionId: string) {
   if (element) {
     element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+}
+
+function getNextQuestion(index: QuestionIndex): QuestionIndex {
+  return index === 2 ? 0 : ((index + 1) as QuestionIndex);
 }
 
 function StageDots() {
@@ -85,11 +79,8 @@ function StageDots() {
 export function Hero({ onOpenModal }: HeroProps) {
   const [selectedQuestion, setSelectedQuestion] = useState<QuestionIndex>(0);
   const [stage, setStage] = useState<DemoStage>("idle");
-  const [showAll, setShowAll] = useState(false);
-  const [runId, setRunId] = useState(0);
 
   const activeQuestion = questions[selectedQuestion];
-  const visibleSteps = showAll ? activeQuestion.steps : activeQuestion.steps.slice(0, 2);
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -111,13 +102,20 @@ export function Hero({ onOpenModal }: HeroProps) {
         clearTimeout(timeoutId);
       }
     };
-  }, [runId, stage]);
+  }, [stage]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setSelectedQuestion((current) => getNextQuestion(current));
+    }, 3000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   function handleChipClick(index: QuestionIndex) {
     setSelectedQuestion(index);
-    setShowAll(false);
-    setStage("idle");
-    setRunId((current) => current + 1);
   }
 
   function handleStemClick() {
@@ -247,7 +245,7 @@ export function Hero({ onOpenModal }: HeroProps) {
         </div>
 
         <p className="mt-4 text-xs text-[#4A4A5A]">
-          Free forever · Works with ChatGPT, Gemini &amp; Claude
+          Free forever &middot; Works with ChatGPT, Gemini &amp; Claude
         </p>
       </div>
 
@@ -264,10 +262,10 @@ export function Hero({ onOpenModal }: HeroProps) {
                 type="button"
                 aria-pressed={isActive}
                 onClick={() => handleChipClick(index as QuestionIndex)}
-                className={`rounded-lg border px-3 py-2 text-sm transition-colors duration-150 ${
+                className={`rounded-lg border px-3 py-2 text-sm transition-all duration-500 ease-in-out ${
                   isActive
-                    ? "border-[#0EA5A0] bg-[#0EA5A015] text-[#0EA5A0]"
-                    : "border-[#E2E8F0] text-[#64748B] hover:border-[#0EA5A0] hover:text-[#0EA5A0]"
+                    ? "border-[#0EA5A0] bg-[#0EA5A015] text-[#0EA5A0] opacity-100 shadow-[0_8px_20px_rgba(14,165,160,0.08)]"
+                    : "border-[#E2E8F0] text-[#64748B] opacity-65 hover:border-[#0EA5A0] hover:text-[#0EA5A0] hover:opacity-100"
                 }`}
               >
                 {question.chip}
@@ -281,14 +279,14 @@ export function Hero({ onOpenModal }: HeroProps) {
             <div className="mb-2 flex items-center justify-between gap-3">
               <span className="text-xs font-medium text-[#0EA5A0]">Topic identified</span>
               <span className="rounded-sm bg-[#0EA5A015] px-2 py-1 font-mono text-xs text-[#0EA5A0]">
-                {activeQuestion.key}
+                {overlayCard.key}
               </span>
             </div>
 
-            <div className="mb-3 text-lg font-medium text-[#0F1117]">{activeQuestion.topic}</div>
+            <div className="mb-3 text-lg font-medium text-[#0F1117]">{overlayCard.title}</div>
 
             <div className="mb-3 space-y-2">
-              {visibleSteps.map((step) => (
+              {overlayCard.steps.map((step) => (
                 <div key={step.n} className="flex items-start gap-2">
                   <span className="w-6 flex-shrink-0 font-mono text-xs text-[#0EA5A0]">
                     {step.n}
@@ -301,64 +299,63 @@ export function Hero({ onOpenModal }: HeroProps) {
               ))}
             </div>
 
-            <button
-              type="button"
-              onClick={() => setShowAll((current) => !current)}
-              className="inline-flex items-center gap-2 text-sm font-medium text-[#0EA5A0] transition-colors duration-150 hover:text-[#0D9490]"
-            >
-              <span>{showAll ? "Hide full solution" : "View full solution"}</span>
-              <ArrowRight aria-hidden="true" size={16} strokeWidth={1.5} />
-            </button>
+            <div className="inline-flex items-center gap-2 text-sm font-medium text-[#0F1117]">
+              <span>Framework matched &middot; {overlayCard.subject}</span>
+              <Check aria-hidden="true" size={16} strokeWidth={1.8} className="text-[#22C55E]" />
+            </div>
           </div>
         ) : null}
 
-        <div className="overflow-hidden rounded-lg border border-[#E2E8F0] bg-[#FFFFFF]">
-          <div className="flex items-center gap-3 border-b border-[#E2E8F0] bg-[#F8F9FC] px-4 py-3">
+        <div className="overflow-hidden rounded-lg border border-[#E2E8F0] bg-[#FCFCFD] shadow-[0_14px_34px_rgba(15,23,42,0.04)]">
+          <div className="flex items-center gap-3 border-b border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3">
             <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-sm bg-[#0EA5A0]" />
-              <span className="h-2.5 w-2.5 rounded-sm bg-[#F59E0B]" />
-              <span className="h-2.5 w-2.5 rounded-sm bg-[#64748B]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#CBD5E1]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#E2E8F0]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#94A3B8]" />
             </div>
-            <span className="mx-auto rounded-sm bg-[#E2E8F0] px-3 py-1 text-xs text-[#64748B]">
-              ChatGPT
+            <span className="mx-auto rounded-md border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-1 text-xs text-[#64748B]">
+              ECE 610 course portal
             </span>
             <div className="w-10" />
           </div>
 
-          <div className="min-h-40 space-y-3 p-4">
+          <div className="min-h-40 space-y-3 bg-[#FBFCFE] p-4 opacity-85">
             <div
-              key={`user-${selectedQuestion}-${runId}`}
-              className="hero-bubble-in ml-auto max-w-[85%] rounded-md border border-[#E2E8F0] bg-[#F8F9FC] px-3 py-3 text-sm text-[#0F1117]"
+              key={`document-${selectedQuestion}`}
+              className="hero-bubble-in rounded-md border border-[#E2E8F0] bg-[#FFFFFF] px-4 py-4 text-sm text-[#0F1117] shadow-[0_8px_20px_rgba(15,23,42,0.03)]"
             >
-              {activeQuestion.userMessage}
+              <div className="mb-2 text-[11px] font-medium uppercase tracking-[1px] text-[#94A3B8]">
+                Discussion draft
+              </div>
+              <p className="leading-[1.7] text-[#0F1117]">{activeQuestion.chip}</p>
             </div>
 
             {stage === "responding" || stage === "done" ? (
               <div
-                key={`ai-${selectedQuestion}-${stage}`}
-                className="hero-bubble-in max-w-[90%] rounded-md border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-3 text-sm text-[#64748B]"
+                key={`portal-${stage}`}
+                className="hero-bubble-in rounded-md border border-dashed border-[#DCE5EE] bg-[#F8FAFC] px-4 py-4 text-sm text-[#64748B]"
               >
                 <div className="mb-2 inline-flex items-center gap-2 rounded-sm bg-[#0EA5A015] px-2 py-1 text-xs font-medium text-[#0EA5A0]">
                   <Check aria-hidden="true" size={16} strokeWidth={1.5} />
-                  <span>Framework active</span>
+                  <span>Extension ready</span>
                 </div>
                 <p className="flex flex-wrap items-center gap-1">
-                  <span>{activeQuestion.aiPartial}</span>
+                  <span>Open stemLM from the toolbar to structure the solution inside the page.</span>
                   {stage === "responding" ? <StageDots /> : null}
                 </p>
               </div>
             ) : null}
           </div>
 
-          <div className="flex items-center gap-2 border-t border-[#E2E8F0] px-3 py-3">
-            <div className="flex-1 rounded-md bg-[#F8F9FC] px-3 py-2 text-xs text-[#4A4A5A]">
-              Message ChatGPT...
+          <div className="flex items-center gap-2 border-t border-[#E2E8F0] bg-[#FAFBFC] px-3 py-3">
+            <div className="flex-1 rounded-md border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#94A3B8]">
+              Paste a question from your notes or assignment...
             </div>
 
             <button
               type="button"
-              aria-label="Send message"
-              className="flex h-8 w-8 items-center justify-center rounded-md bg-[#0F1117] text-[#F0F0F2]"
+              aria-label="Open course document"
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-[#E2E8F0] bg-[#FFFFFF] text-[#64748B]"
             >
               <SendHorizontal aria-hidden="true" size={16} strokeWidth={1.5} />
             </button>
@@ -399,10 +396,10 @@ export function Hero({ onOpenModal }: HeroProps) {
         </div>
 
         <div className="mt-3 text-center text-xs text-[#64748B]">
-          {stage === "idle" ? "Click stemLM to analyze" : null}
+          {stage === "idle" ? "Launch stemLM from the toolbar" : null}
           {stage === "injecting" ? (
             <span className="inline-flex items-center">
-              <span>Identifying topic</span>
+              <span>Matching framework</span>
               <StageDots />
             </span>
           ) : null}
@@ -410,7 +407,7 @@ export function Hero({ onOpenModal }: HeroProps) {
           {stage === "done" ? (
             <span className="inline-flex items-center gap-2">
               <Check aria-hidden="true" size={16} strokeWidth={1.5} className="text-[#22C55E]" />
-              <span>Framework matched · {activeQuestion.subject}</span>
+              <span>Framework matched &middot; {overlayCard.subject}</span>
             </span>
           ) : null}
         </div>
