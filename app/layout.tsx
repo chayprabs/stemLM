@@ -17,9 +17,9 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "stemLM | Step-by-step STEM with visual reasoning",
+  title: "stemLM | Add Structure to ChatGPT for STEM",
   description:
-    "stemLM turns AI into a structured STEM tutor with guided steps, diagrams, and a functional study workspace.",
+    "stemLM adds framework-matched, step-by-step structure to AI answers for STEM students with clearer working, diagrams, and study-ready explanations inside ChatGPT, Gemini, and Claude.",
 };
 
 export default function RootLayout({

@@ -43,7 +43,7 @@ function UniversityLogo({
   logoClassName?: string;
 }) {
   return (
-    <div className="group flex h-full min-h-[156px] cursor-default flex-col items-center justify-center p-4 text-center">
+    <div className="group flex h-full min-h-[132px] cursor-default flex-col items-center justify-center p-3 text-center sm:min-h-[156px] sm:p-4">
       <div className="relative flex h-20 w-20 items-center justify-center">
         <Image
           src={logo}
@@ -53,7 +53,7 @@ function UniversityLogo({
           className={`object-contain grayscale opacity-70 transition-all duration-300 ease-in-out group-hover:scale-[1.05] group-hover:grayscale-0 group-hover:opacity-100 ${logoClassName}`}
         />
       </div>
-      <span className="mt-2 text-xs leading-[1.5] text-[#7C8798] transition-colors duration-150 group-hover:text-[#5B677A]">
+      <span className="mt-2 text-[11px] leading-[1.5] text-[#7C8798] transition-colors duration-150 group-hover:text-[#5B677A] sm:text-xs">
         {name}
       </span>
     </div>
@@ -62,20 +62,20 @@ function UniversityLogo({
 
 export function UniversityStrip() {
   return (
-    <section className="border-y border-[#E2E8F0] bg-[#FFFFFF] px-5 py-10 md:px-12 md:py-12">
-      <div className="mx-auto mb-10 max-w-[680px] text-center">
+    <section className="border-y border-[#E2E8F0] bg-[#FFFFFF] px-4 py-6 sm:px-5 md:px-12 md:py-8">
+      <div className="mx-auto mb-6 max-w-[680px] text-center sm:mb-8">
         <p className="mb-3 text-[11px] font-medium uppercase tracking-[1px] text-[#0EA5A0]">
           Trusted by learners
         </p>
-        <h2 className="text-[34px] font-medium leading-tight tracking-[-0.5px] text-[#0F1117]">
+        <h2 className="text-balance text-[24px] font-medium leading-tight tracking-[-0.5px] text-[#0F1117] sm:text-[32px] md:text-[34px]">
           <span className="block">10,000+ students</span>
-          <span className="mt-2 block text-[16px] font-normal leading-[1.7] tracking-normal text-[#64748B] md:text-[18px]">
+          <span className="mt-2 block text-[15px] font-normal leading-[1.7] tracking-normal text-[#64748B] sm:text-[16px] md:text-[18px]">
             across top universities worldwide
           </span>
         </h2>
       </div>
 
-      <div className="mx-auto grid max-w-[980px] grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+      <div className="mx-auto grid max-w-[980px] grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
         {universities.map((university) => (
           <UniversityLogo
             key={university.name}

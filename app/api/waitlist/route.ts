@@ -5,10 +5,18 @@ export const runtime = "nodejs";
 
 type WaitlistEntry = {
   id: string;
-  name: string;
   email: string;
-  role: string;
   createdAt: string;
+  name?: string;
+  role?: string;
+  source?: string;
+};
+
+type WaitlistRequestBody = {
+  name?: string;
+  email?: string;
+  role?: string;
+  source?: string;
 };
 
 const waitlistFile = path.join(process.cwd(), "data", "waitlist.json");
@@ -65,24 +73,24 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as Partial<WaitlistEntry>;
+    const body = (await request.json()) as WaitlistRequestBody;
     const name = body.name?.trim() ?? "";
     const email = body.email?.trim().toLowerCase() ?? "";
-    const role = body.role?.trim() ?? "Student";
+    const role = body.role?.trim() ?? "";
+    const source = body.source?.trim().slice(0, 50) ?? "";
 
-    if (name.length < 2) {
-      return Response.json({ error: "Please enter your name." }, { status: 400 });
-    }
-
-    if (name.length > 80) {
-      return Response.json({ error: "Please keep your name under 80 characters." }, { status: 400 });
+    if (name && name.length > 80) {
+      return Response.json(
+        { error: "Please keep your name under 80 characters." },
+        { status: 400 },
+      );
     }
 
     if (!isValidEmail(email)) {
       return Response.json({ error: "Please enter a valid email address." }, { status: 400 });
     }
 
-    if (!allowedRoles.has(role)) {
+    if (role && !allowedRoles.has(role)) {
       return Response.json({ error: "Please choose a valid role." }, { status: 400 });
     }
 
@@ -104,10 +112,11 @@ export async function POST(request: Request) {
 
     const nextEntry: WaitlistEntry = {
       id: crypto.randomUUID(),
-      name,
       email,
-      role,
       createdAt: new Date().toISOString(),
+      ...(name ? { name } : {}),
+      ...(role ? { role } : {}),
+      ...(source ? { source } : {}),
     };
 
     entries.push(nextEntry);

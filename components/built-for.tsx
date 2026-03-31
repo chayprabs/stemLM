@@ -18,9 +18,9 @@ const cards = [
 
 export function BuiltFor() {
   return (
-    <section className="bg-white px-5 py-16 md:px-12 md:py-24">
+    <section className="bg-white px-4 py-8 sm:px-5 md:px-12 md:py-12">
       <div className="mx-auto max-w-[1100px]">
-        <div className="mb-12">
+        <div className="mb-8 md:mb-10">
           <div className="mb-6 flex items-center gap-3">
             <p className="text-[11px] font-medium uppercase tracking-[1px] text-[#0EA5A0]">
               Built for
@@ -28,22 +28,22 @@ export function BuiltFor() {
             <div className="h-px max-w-[60px] flex-1 bg-[#E2E8F0]" />
           </div>
 
-          <h2 className="text-[34px] font-medium tracking-[-0.5px] text-[#0F1117]">
+          <h2 className="max-w-[13ch] text-balance text-[24px] font-medium tracking-[-0.5px] text-[#0F1117] sm:max-w-none sm:text-[32px] md:text-[34px]">
             Built for students who need the missing steps, not just the answer.
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-3">
           {cards.map((card) => (
             <article
               key={card.number}
-              className="rounded-[14px] border border-[#E2E8F0] bg-[#F8F9FC] p-6"
+              className="rounded-[14px] border border-[#E2E8F0] bg-[#F8F9FC] p-4 sm:p-6"
             >
-              <p className="mb-4 font-mono text-[13px] font-medium text-[#0EA5A0]">
+              <p className="mb-3 font-mono text-[12px] font-medium text-[#0EA5A0] sm:mb-4 sm:text-[13px]">
                 {card.number}
               </p>
-              <h3 className="mb-3 text-[16px] font-medium text-[#0F1117]">{card.title}</h3>
-              <p className="text-[14px] leading-[1.6] text-[#64748B]">{card.body}</p>
+              <h3 className="mb-3 text-[15px] font-medium text-[#0F1117] sm:text-[16px]">{card.title}</h3>
+              <p className="text-[13px] leading-[1.65] text-[#64748B] sm:text-[14px] sm:leading-[1.6]">{card.body}</p>
             </article>
           ))}
         </div>
