@@ -2,34 +2,37 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="flex flex-col items-center justify-between gap-4 border-t border-[#E2E8F0] bg-[#FFFFFF] px-5 py-6 sm:flex-row md:px-12">
-      <div className="flex flex-col gap-1">
-        <div className="font-wordmark text-base font-medium">
-          <span className="text-[#64748B]">stem</span>
-          <span className="text-[#0EA5A0]">LM</span>
+    <footer className="border-t border-[#0F172A14] bg-[#F9FAFB]">
+      <div className="mx-auto flex min-h-[64px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-5 py-4 md:px-12">
+        <div className="flex items-center gap-3">
+          <div className="font-wordmark text-base font-semibold tracking-[-0.2px] text-[#0EA5A0]">
+            stemLM
+          </div>
+          <p className="text-xs text-[#94A3B8]">{"\u00A9"} 2026 stemLM</p>
         </div>
-        <p className="text-xs text-[#4A4A5A]">{"\u00A9"} 2026 stemLM</p>
-      </div>
 
-      <div className="flex gap-6">
-        <Link
-          href="/privacy"
-          className="text-sm text-[#64748B] transition-colors duration-150 hover:text-[#0F1117]"
-        >
-          Privacy
-        </Link>
-        <Link
-          href="/terms"
-          className="text-sm text-[#64748B] transition-colors duration-150 hover:text-[#0F1117]"
-        >
-          Terms
-        </Link>
-        <a
-          href="mailto:hello@stemlm.com"
-          className="text-sm text-[#64748B] transition-colors duration-150 hover:text-[#0F1117]"
-        >
-          Contact
-        </a>
+        <nav className="flex items-center text-xs text-[#64748B]">
+          <Link
+            href="/privacy"
+            className="transition-colors duration-150 hover:text-[#0F1117]"
+          >
+            Privacy
+          </Link>
+          <span className="px-3 text-[#CBD5E1]">&middot;</span>
+          <Link
+            href="/terms"
+            className="transition-colors duration-150 hover:text-[#0F1117]"
+          >
+            Terms
+          </Link>
+          <span className="px-3 text-[#CBD5E1]">&middot;</span>
+          <a
+            href="mailto:hello@stemlm.com"
+            className="transition-colors duration-150 hover:text-[#0F1117]"
+          >
+            Contact
+          </a>
+        </nav>
       </div>
     </footer>
   );
