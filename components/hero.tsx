@@ -80,10 +80,14 @@ function ProjectileDiagram() {
       <line x1="20" y1="80" x2="45" y2="55" stroke="#0EA5A0" strokeWidth="1.5" />
       <path d="M 40 56 L 45 55 L 44 60" fill="none" stroke="#0EA5A0" strokeWidth="1.5" />
       <path d="M 34 80 A 14 14 0 0 1 44 70" stroke="#0EA5A0" strokeWidth="1" fill="none" />
-      <text x="38" y="72" fontSize="8" fill="#8A8A9A">
-        45{"\u00B0"}
-      </text>
-      <text x="30" y="68" fontSize="7" fill="#8A8A9A">
+      <g aria-label="Launch angle 45 degrees">
+        <rect x="36" y="66" width="21" height="11" rx="5.5" fill="#FFFFFF" stroke="#DCE5EE" />
+        <text x="45" y="73.2" textAnchor="middle" fontSize="7" fontWeight="600" fill="#0EA5A0">
+          45
+        </text>
+        <circle cx="51.5" cy="69.5" r="1.4" fill="none" stroke="#0EA5A0" strokeWidth="1" />
+      </g>
+      <text x="24" y="66" fontSize="7" fill="#8A8A9A">
         20 m/s
       </text>
       <line x1="100" y1="25" x2="100" y2="80" stroke="#1E1E24" strokeDasharray="2 2" />
@@ -464,21 +468,25 @@ export function Hero({ onOpenModal }: HeroProps) {
               transition: "flex 0.4s ease-out",
             }}
           >
-            <div className="flex h-7 flex-shrink-0 items-center gap-1.5 border-b border-[#E2E8F0] bg-[#F8F9FC] px-3">
+            <div className="flex h-8 flex-shrink-0 items-center gap-1.5 border-b border-[#E2E8F0] bg-[#F8F9FC] px-3">
               <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
-              <span className="mx-auto rounded-full border border-[#E2E8F0] bg-white px-2 py-0.5 text-[10px] text-[#8A8A9A]">
+              <span className="mx-auto max-w-[112px] truncate rounded-full border border-[#E2E8F0] bg-white px-2 py-0.5 text-[10px] leading-none text-[#8A8A9A]">
                 chat.openai.com
               </span>
               {isSplit ? (
-                <span className="rounded-full border border-[#E2E8F0] bg-[#F8F9FC] px-1.5 py-0.5 text-[9px] text-[#8A8A9A]">
-                  {`\u2022 Next replay in ${replaySeconds}s`}
+                <span className="inline-flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[8px] border border-[#D8E2E8] bg-white px-2 py-1 text-[9px] leading-none shadow-[0_6px_16px_rgba(15,17,23,0.05)]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#0EA5A0]" />
+                  <span className="text-[#8A8A9A]">Next reply</span>
+                  <span className="rounded-full bg-[#0EA5A015] px-1.5 py-0.5 font-mono text-[8px] font-medium text-[#0EA5A0]">
+                    {replaySeconds}s
+                  </span>
                 </span>
               ) : null}
             </div>
 
-            <div className="flex h-[calc(100%-28px)] flex-col">
+            <div className="flex h-[calc(100%-32px)] flex-col">
               <div className="flex-1 overflow-hidden p-3">
                 <div className="flex h-full flex-col gap-2 overflow-hidden">
                   {isSplit ? (

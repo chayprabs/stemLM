@@ -238,7 +238,7 @@ function PanelStepContent({ index }: { index: number }) {
   if (index === 0) {
     return (
       <div className="mt-3">
-        <div className="space-y-2 rounded-[12px] border border-[#DCE5EE] bg-[#F8FAFC] px-3 py-3 text-[12px] leading-[1.8] text-[#0F1117]">
+        <div className="space-y-1.5 rounded-[12px] border border-[#DCE5EE] bg-[#F8FAFC] px-3 py-2.5 text-[12px] leading-[1.75] text-[#0F1117]">
           <div className="grid grid-cols-[58px_minmax(0,1fr)] items-start gap-3">
             <span className="text-[#64748B]">Sum</span>
             <code className="font-mono text-[12px] text-[#0F1117]">
@@ -252,7 +252,7 @@ function PanelStepContent({ index }: { index: number }) {
             </code>
           </div>
         </div>
-        <p className="mt-3 text-[13px] leading-[1.7] text-[#64748B]">
+        <p className="mt-2.5 text-[13px] leading-[1.65] text-[#64748B]">
           Each stage uses the same full-adder equations. Only the carry input changes
           as the chain moves from bit 0 to bit 3.
         </p>
@@ -263,11 +263,11 @@ function PanelStepContent({ index }: { index: number }) {
   if (index === 1) {
     return (
       <div className="mt-3">
-        <p className="mb-3 text-[13px] leading-[1.7] text-[#64748B]">
+        <p className="mb-2.5 text-[13px] leading-[1.65] text-[#64748B]">
           Four identical full adders are cascaded. The carry-out of one stage becomes
           the carry-in of the next stage.
         </p>
-        <div className="overflow-hidden rounded-[16px] border border-[#DCE5EE] bg-[#FFFFFF] p-4">
+        <div className="overflow-hidden rounded-[16px] border border-[#DCE5EE] bg-[#FFFFFF] p-3">
           <RippleCarryPanelDiagram />
         </div>
       </div>
@@ -276,8 +276,8 @@ function PanelStepContent({ index }: { index: number }) {
 
   if (index === 2) {
     return (
-      <div className="mt-3 space-y-3 text-[13px] leading-[1.7] text-[#64748B]">
-        <div className="rounded-[12px] border border-[#DCE5EE] bg-[#F8FAFC] px-3 py-3">
+      <div className="mt-3 space-y-2.5 text-[13px] leading-[1.65] text-[#64748B]">
+        <div className="rounded-[12px] border border-[#DCE5EE] bg-[#F8FAFC] px-3 py-2.5">
           <p>Carry through one full adder = 2 gate delays = 20ns.</p>
           <p className="mt-2">Final carry C4 = 4 stages x 20ns = 80ns.</p>
           <p className="mt-2">Last sum S3 also reaches 80ns after waiting for C3 and two XOR gates.</p>
@@ -290,12 +290,12 @@ function PanelStepContent({ index }: { index: number }) {
   }
 
   return (
-    <div className="mt-3 space-y-3 text-[13px] leading-[1.7] text-[#64748B]">
+    <div className="mt-3 space-y-2.5 text-[13px] leading-[1.65] text-[#64748B]">
       <p>
         The 4-bit ripple carry adder works correctly, but its speed is limited because
         every carry has to ripple through the previous stage first.
       </p>
-      <div className="rounded-[12px] border border-[#DCE5EE] bg-[#F8FAFC] px-3 py-3 text-[#0F1117]">
+      <div className="rounded-[12px] border border-[#DCE5EE] bg-[#F8FAFC] px-3 py-2.5 text-[#0F1117]">
         Final answer: the adder produces S0-S3 with a final carry-out after 80ns.
         For higher-speed addition, a carry lookahead adder is the better choice.
       </div>
@@ -525,6 +525,12 @@ export function DatabaseTeaser() {
             box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1),
             border-color 320ms cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        @media (min-width: 1024px) {
+          .demo-frame {
+            height: min(760px, calc(100vh - 112px));
+          }
+        }
       `}</style>
 
       <div className="mx-auto max-w-[1180px]">
@@ -566,15 +572,15 @@ export function DatabaseTeaser() {
             </div>
           </div>
 
-          <div className="relative flex flex-col lg:block lg:h-[940px]">
+          <div className="demo-frame relative flex flex-col lg:block">
             <div
-              className={`order-2 flex min-h-[480px] flex-col bg-[#FBFCFE] transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-h-[660px] lg:h-full lg:min-h-0 ${
+              className={`order-2 flex min-h-[440px] flex-col bg-[#FBFCFE] transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-h-[560px] lg:h-full lg:min-h-0 ${
                 isPanelVisible
                   ? "lg:w-[calc(100%-460px)] lg:border-r lg:border-[#E2E8F0]"
                   : "lg:w-full"
               }`}
             >
-              <div className="border-b border-[#E2E8F0] bg-[#FFFFFF]/80 px-3 py-3 sm:px-4 sm:py-4 md:px-6">
+              <div className="border-b border-[#E2E8F0] bg-[#FFFFFF]/80 px-3 py-3 sm:px-4 sm:py-3.5 md:px-5">
                 <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                   <div>
                     <p className="text-xs font-medium uppercase tracking-[1px] text-[#94A3B8]">
@@ -591,8 +597,8 @@ export function DatabaseTeaser() {
                 </div>
               </div>
 
-              <div className="demo-scroll flex-1 space-y-4 overflow-y-auto px-3 py-4 sm:px-4 sm:py-5 md:space-y-5 md:px-7">
-                <div className="mx-auto hidden w-full max-w-[760px] rounded-[22px] border border-[#E2E8F0] bg-[#FFFFFF] px-4 py-4 text-sm leading-[1.7] text-[#64748B] sm:block sm:px-5">
+              <div className="demo-scroll flex-1 space-y-3 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4 md:space-y-4 md:px-5">
+                <div className="mx-auto hidden w-full max-w-[760px] rounded-[20px] border border-[#E2E8F0] bg-[#FFFFFF] px-4 py-3.5 text-sm leading-[1.65] text-[#64748B] sm:block sm:px-5">
                   <p className="text-xs font-medium uppercase tracking-[1px] text-[#0EA5A0]">
                     What stemLM changes
                   </p>
@@ -604,7 +610,7 @@ export function DatabaseTeaser() {
                 </div>
 
                 {messageSent ? (
-                  <div className="mx-auto ml-auto w-full max-w-[760px] rounded-[24px] border border-[#DDE6EF] bg-[#FFFFFF] px-4 py-4 text-[14px] leading-[1.8] text-[#0F1117] shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:px-5 sm:py-5 sm:text-[15px]">
+                  <div className="mx-auto ml-auto w-full max-w-[760px] rounded-[22px] border border-[#DDE6EF] bg-[#FFFFFF] px-4 py-3.5 text-[14px] leading-[1.75] text-[#0F1117] shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:px-5 sm:py-4 sm:text-[15px]">
                     <p className="mb-2 text-xs font-medium uppercase tracking-[1px] text-[#94A3B8]">
                       You
                     </p>
@@ -613,8 +619,8 @@ export function DatabaseTeaser() {
                 ) : null}
 
                 {visibleResponseSections > 0 ? (
-                  <div className="mx-auto w-full max-w-[760px] rounded-[24px] border border-[#DDE6EF] bg-[#FFFFFF] px-4 py-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:px-5 sm:py-5">
-                    <div className="mb-4 flex items-center gap-3">
+                  <div className="mx-auto w-full max-w-[760px] rounded-[22px] border border-[#DDE6EF] bg-[#FFFFFF] px-4 py-3.5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:px-5 sm:py-4">
+                    <div className="mb-3 flex items-center gap-3">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F1F5F9] text-[11px] font-medium text-[#0F1117]">
                         AI
                       </div>
@@ -635,17 +641,17 @@ export function DatabaseTeaser() {
                       </div>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
                       {responseSections.slice(0, visibleResponseSections).map((section) => (
                         <div
                           key={`${cycle}-${section.title}`}
-                          className="demo-response-in rounded-[18px] border border-[#E2E8F0] bg-[#F8F9FC] px-4 py-4"
+                          className="demo-response-in rounded-[18px] border border-[#E2E8F0] bg-[#F8F9FC] px-4 py-3"
                         >
                           <p className="text-xs font-medium uppercase tracking-[1px] text-[#94A3B8]">
                             {section.title}
                           </p>
                           <p
-                            className={`mt-2 whitespace-pre-wrap text-[13px] leading-[1.8] ${
+                            className={`mt-2 whitespace-pre-wrap text-[13px] leading-[1.7] ${
                               "mono" in section ? "font-mono text-[#0F1117]" : "text-[#475569]"
                             }`}
                           >
@@ -656,7 +662,7 @@ export function DatabaseTeaser() {
                     </div>
 
                     {visibleResponseSections === responseSections.length ? (
-                      <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#0EA5A015] px-3 py-2 text-xs font-medium text-[#0EA5A0]">
+                      <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#0EA5A015] px-3 py-2 text-xs font-medium text-[#0EA5A0]">
                         <PanelRightOpen aria-hidden="true" size={14} strokeWidth={1.6} />
                         <span>stemLM detects the returned key and opens the side panel.</span>
                       </div>
@@ -665,10 +671,10 @@ export function DatabaseTeaser() {
                 ) : null}
               </div>
 
-              <div className="border-t border-[#E2E8F0] bg-[#FFFFFF] p-3 sm:p-4 md:p-6">
+              <div className="border-t border-[#E2E8F0] bg-[#FFFFFF] p-3 sm:p-4 md:p-4">
                 <div className="mx-auto w-full max-w-[760px]">
                   {!messageSent ? (
-                    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#64748B]">
+                    <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#64748B]">
                       {isInjecting ? (
                         <LoaderCircle aria-hidden="true" size={14} strokeWidth={1.7} className="animate-spin text-[#0EA5A0]" />
                       ) : (
@@ -684,15 +690,15 @@ export function DatabaseTeaser() {
                       {isInjecting ? <StageDots /> : null}
                     </div>
                   ) : (
-                    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#64748B]">
+                    <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#64748B]">
                       <PanelRightOpen aria-hidden="true" size={14} strokeWidth={1.7} className="text-[#0EA5A0]" />
                       <span>stemLM is reading the streamed answer and opening the side panel.</span>
                       {visiblePanelSteps < panelSteps.length ? <StageDots /> : null}
                     </div>
                   )}
 
-                  <div className="rounded-[24px] border border-[#E2E8F0] bg-[#FFFFFF] p-2.5 sm:p-3">
-                    <div className="min-h-[96px] rounded-[18px] bg-[#F8F9FC] px-4 py-4 text-[14px] leading-[1.8] text-[#0F1117] sm:min-h-[108px] sm:text-[15px]">
+                  <div className="rounded-[22px] border border-[#E2E8F0] bg-[#FFFFFF] p-2.5">
+                    <div className="min-h-[84px] rounded-[18px] bg-[#F8F9FC] px-4 py-3.5 text-[14px] leading-[1.75] text-[#0F1117] sm:min-h-[96px] sm:text-[15px]">
                       {messageSent ? (
                         <span className="text-[#94A3B8]">Ask another question...</span>
                       ) : (
@@ -703,7 +709,7 @@ export function DatabaseTeaser() {
                       )}
                     </div>
 
-                    <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="mt-2.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
                       <span className="text-xs text-[#64748B]">Enter to send</span>
 
                       <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-start">
@@ -756,14 +762,14 @@ export function DatabaseTeaser() {
             <div
               className={`${
                 isPanelVisible ? "flex" : "hidden lg:flex"
-              } order-1 min-h-[460px] flex-col border-t border-[#E2E8F0] bg-[#F4F8FB] transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-h-[660px] lg:absolute lg:right-0 lg:top-0 lg:h-full lg:min-h-0 lg:w-[460px] lg:border-l lg:border-t-0 lg:border-[#E2E8F0] ${
+              } order-1 min-h-[420px] flex-col border-t border-[#E2E8F0] bg-[#F4F8FB] transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:min-h-[560px] lg:absolute lg:right-0 lg:top-0 lg:h-full lg:min-h-0 lg:w-[460px] lg:border-l lg:border-t-0 lg:border-[#E2E8F0] ${
                 isPanelVisible
                   ? "lg:translate-x-0 lg:opacity-100"
                   : "lg:pointer-events-none lg:translate-x-[108%] lg:opacity-0"
               }`}
             >
               <div
-                className={`demo-panel-shell m-2.5 flex min-h-0 flex-1 flex-col overflow-hidden rounded-[24px] border bg-[#F9FBFD] sm:m-3 ${
+                className={`demo-panel-shell m-2 flex min-h-0 flex-1 flex-col overflow-hidden rounded-[24px] border bg-[#F9FBFD] sm:m-2.5 ${
                   isPanelVisible
                     ? "demo-panel-in translate-x-0 translate-y-0 scale-100 border-[#DCE5EE] shadow-[0_18px_40px_rgba(15,23,42,0.10)]"
                     : "translate-x-4 translate-y-2 scale-[0.985] border-[#E7EEF5] shadow-[0_8px_22px_rgba(15,23,42,0.04)]"
@@ -786,7 +792,7 @@ export function DatabaseTeaser() {
                   </span>
                 </div>
 
-                <div className="border-b border-[#E2E8F0] px-4 py-4">
+                <div className="border-b border-[#E2E8F0] px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     <span className="rounded-sm bg-[#0EA5A015] px-2 py-1 text-[11px] font-medium text-[#0EA5A0]">
                       Framework matched
@@ -795,37 +801,14 @@ export function DatabaseTeaser() {
                       {frameworkTag}
                     </span>
                   </div>
-
-                  <div className="mt-3 rounded-[14px] border border-[#DCE5EE] bg-[#FFFFFF] p-4">
-                    <p className="text-[11px] font-medium uppercase tracking-[1px] text-[#94A3B8]">
-                      Extraction status
-                    </p>
-                    <div className="mt-3 flex items-start gap-3">
-                      <Check
-                        aria-hidden="true"
-                        size={16}
-                        strokeWidth={1.8}
-                        className="mt-0.5 text-[#0EA5A0]"
-                      />
-                      <div>
-                        <p className="text-sm font-medium text-[#0F1117]">
-                          Hidden framework key found in the ChatGPT response.
-                        </p>
-                        <p className="mt-2 text-xs leading-[1.7] text-[#64748B]">
-                          stemLM reformats the answer into a fixed study layout with
-                          equations, circuit structure, and timing notes.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div
                   ref={panelScrollRef}
-                  className="demo-scroll min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4 sm:px-5 sm:py-5"
+                  className="demo-scroll min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 sm:px-4 sm:py-4"
                 >
                   {visiblePanelSteps === 0 ? (
-                    <div className="rounded-[14px] border border-dashed border-[#DCE5EE] bg-[#FFFFFF] px-4 py-4 text-sm text-[#64748B]">
+                    <div className="rounded-[14px] border border-dashed border-[#DCE5EE] bg-[#FFFFFF] px-4 py-3 text-sm text-[#64748B]">
                       Listening for the returned framework key...
                     </div>
                   ) : null}
@@ -833,7 +816,7 @@ export function DatabaseTeaser() {
                   {panelSteps.slice(0, visiblePanelSteps).map((step, index) => (
                     <article
                       key={`${cycle}-${step}`}
-                      className="demo-step-in rounded-[18px] border border-[#DCE5EE] bg-[#FFFFFF] p-4 sm:p-5 md:p-6"
+                      className="demo-step-in rounded-[18px] border border-[#DCE5EE] bg-[#FFFFFF] p-4"
                     >
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#0EA5A015] text-[11px] font-medium text-[#0EA5A0]">
@@ -851,7 +834,7 @@ export function DatabaseTeaser() {
                   ))}
                 </div>
 
-                <div className="border-t border-[#E2E8F0] bg-[#FFFFFF] px-4 py-3">
+                <div className="border-t border-[#E2E8F0] bg-[#FFFFFF] px-4 py-2.5">
                   <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <span className="text-[11px] text-[#94A3B8]">Powered by stemLM</span>
 

@@ -1,8 +1,6 @@
 "use client";
 
-import { CircleCheck } from "lucide-react";
-
-import { useWaitlist } from "@/hooks/use-waitlist";
+import { WaitlistForm } from "@/components/WaitlistForm";
 
 const highlights = [
   "Framework-matched STEM solutions",
@@ -11,8 +9,6 @@ const highlights = [
 ] as const;
 
 export function WaitlistCta() {
-  const { email, setEmail, error, message, submitted, isSubmitting, submit } = useWaitlist("cta");
-
   return (
     <section id="waitlist" className="bg-white px-4 py-8 sm:px-5 md:px-12 md:py-12">
       <div className="mx-auto max-w-[1100px] overflow-hidden rounded-[24px] border border-[#E2E8F0] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8FCFB_100%)] shadow-[0_22px_60px_rgba(15,23,42,0.06)] sm:rounded-[30px]">
@@ -56,42 +52,13 @@ export function WaitlistCta() {
                 We&apos;ll reach out when your spot opens.
               </p>
 
-              {!submitted ? (
-                <>
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <input
-                      type="email"
-                      value={email}
-                      disabled={isSubmitting}
-                      onChange={(event) => {
-                        setEmail(event.target.value);
-                      }}
-                      placeholder="your@email.com"
-                      className="flex-1 rounded-xl border border-[#D7E0EA] bg-[#FBFCFD] px-4 py-3.5 text-sm text-[#0F1117] placeholder:text-[#94A3B8] transition-colors duration-150 focus:border-[#0EA5A0] focus:outline-none focus:ring-[1.5px] focus:ring-[#0EA5A0]"
-                    />
-                    <button
-                      type="button"
-                      onClick={submit}
-                      disabled={isSubmitting}
-                      className="whitespace-nowrap rounded-xl bg-[#0EA5A0] px-5 py-3.5 text-sm font-medium text-[#F8FAFC] shadow-[0_12px_24px_rgba(14,165,160,0.18)] transition-all duration-150 hover:-translate-y-0.5 hover:bg-[#14B8A6]"
-                    >
-                      {isSubmitting ? "Joining..." : "Get early access"}
-                    </button>
-                  </div>
-
-                  {error ? (
-                    <p className="mt-3 text-xs text-[#EF4444]">{error}</p>
-                  ) : null}
-                </>
-              ) : (
-                <div className="mt-6 rounded-2xl border border-[#BBF7D0] bg-[#F0FDF4] px-4 py-4 text-sm text-[#166534]">
-                  <div className="flex items-center gap-3 font-medium">
-                    <CircleCheck aria-hidden="true" size={18} strokeWidth={1.5} />
-                    <span>You&apos;re on the list.</span>
-                  </div>
-                  <p className="mt-2 leading-[1.7]">{message}</p>
-                </div>
-              )}
+              <WaitlistForm
+                className="mt-6"
+                variant="inline"
+                submitLabel="Get early access"
+                submittingLabel="Joining..."
+                successMessage="We'll reach out when your spot opens."
+              />
 
               <div className="mt-5 border-t border-[#EEF2F6] pt-4 text-xs text-[#94A3B8]">
                 No spam. No sales funnel. Just an invite when it&apos;s ready.

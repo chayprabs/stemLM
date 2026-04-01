@@ -1,9 +1,8 @@
 "use client";
 
-import { CircleCheck, X } from "lucide-react";
-import { useEffect } from "react";
+import { X } from "lucide-react";
 
-import { useWaitlist } from "@/hooks/use-waitlist";
+import { WaitlistForm } from "@/components/WaitlistForm";
 
 interface WaitlistModalProps {
   isOpen: boolean;
@@ -11,23 +10,6 @@ interface WaitlistModalProps {
 }
 
 export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
-  const {
-    email,
-    setEmail,
-    error,
-    message,
-    submitted,
-    isSubmitting,
-    submit,
-    reset,
-  } = useWaitlist("modal");
-
-  useEffect(() => {
-    if (!isOpen) {
-      reset();
-    }
-  }, [isOpen, reset]);
-
   if (!isOpen) {
     return null;
   }
@@ -50,44 +32,22 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
           <X aria-hidden="true" size={18} strokeWidth={1.5} />
         </button>
 
-        {submitted ? (
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 text-base font-medium text-[#22C55E]">
-              <CircleCheck aria-hidden="true" size={16} strokeWidth={1.5} />
-              <span>You&apos;re on the list.</span>
-            </div>
-            <p className="mt-3 text-sm leading-[1.7] text-[#64748B]">{message}</p>
-          </div>
-        ) : (
-          <>
-            <h2 className="mb-2 text-lg font-medium tracking-[-0.3px] text-[#0F1117] sm:text-xl">
-              Join the waitlist
-            </h2>
-            <p className="mb-6 text-sm text-[#64748B]">
-              Be the first to access stemLM. We&apos;re opening spots gradually for
-              students in private beta.
-            </p>
-            <input
-              type="email"
-              value={email}
-              disabled={isSubmitting}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-              placeholder="your@email.com"
-              className="mb-3 w-full rounded-md border border-[#E2E8F0] bg-[#F8F9FC] px-4 py-3 text-sm text-[#0F1117] placeholder:text-[#4A4A5A] focus:outline-none focus:ring-[1.5px] focus:ring-[#0EA5A0]"
-            />
-            {error ? <p className="mb-3 text-xs text-[#EF4444]">{error}</p> : null}
-            <button
-              type="button"
-              onClick={submit}
-              disabled={isSubmitting}
-              className="w-full rounded-md bg-[#0EA5A0] py-3 text-sm font-medium text-[#F0F0F2] transition-colors duration-150 hover:bg-[#0D9490]"
-            >
-              {isSubmitting ? "Joining..." : "Get early access"}
-            </button>
-          </>
-        )}
+        <h2 className="mb-2 text-lg font-medium tracking-[-0.3px] text-[#0F1117] sm:text-xl">
+          Join the waitlist
+        </h2>
+        <p className="text-sm text-[#64748B]">
+          Be the first to access stemLM. We&apos;re opening spots gradually for students
+          in private beta.
+        </p>
+
+        <WaitlistForm
+          className="mt-6"
+          submitLabel="Get early access"
+          submittingLabel="Joining..."
+          successMessage="We'll send your invite as soon as a spot opens."
+          inputClassName="rounded-md border-[#E2E8F0] bg-[#F8F9FC] py-3 placeholder:text-[#4A4A5A] focus:ring-[#0EA5A0]"
+          buttonClassName="w-full rounded-md py-3 shadow-none hover:translate-y-0 hover:bg-[#0D9490]"
+        />
       </div>
     </div>
   );
