@@ -264,7 +264,7 @@ function WorkspaceApp() {
         <header className="border-b border-[#E2E8F0] bg-[#FFFFFF]">
           <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-5 py-6 md:flex-row md:items-center md:justify-between md:px-12">
             <div>
-              <Link href="/" className="font-wordmark text-base font-medium">
+              <Link href="/" className="font-wordmark text-[18px] font-semibold tracking-[-0.3px] text-[#0F1117]">
                 <span className="text-[#0F1117]">stem</span>
                 <span className="text-[#0EA5A0]">LM</span>
               </Link>

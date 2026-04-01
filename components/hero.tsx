@@ -455,14 +455,14 @@ export function Hero({ onOpenModal }: HeroProps) {
         </div>
 
         <div
-          className="flex h-[360px] flex-row overflow-hidden rounded-[16px] bg-[#F1F5F5] p-2.5"
+          className="flex h-[470px] flex-col overflow-hidden rounded-[16px] bg-[#F1F5F5] p-2 sm:h-[360px] sm:flex-row sm:p-2.5"
           style={{
             gap: isSplit ? "0.5rem" : "0px",
             transition: "gap 0.4s ease-out",
           }}
         >
           <div
-            className="min-w-0 overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white"
+            className="min-h-0 min-w-0 overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white"
             style={{
               flex: isSplit ? "0 0 55%" : "1 1 100%",
               transition: "flex 0.4s ease-out",
@@ -490,22 +490,22 @@ export function Hero({ onOpenModal }: HeroProps) {
               <div className="flex-1 overflow-hidden p-3">
                 <div className="flex h-full flex-col gap-2 overflow-hidden">
                   {isSplit ? (
-                    <div className="mb-1">
-                      <div className="text-[9px] font-medium uppercase tracking-wider text-[#8A8A9A]">
+                    <div className="mb-0.5 sm:mb-1">
+                      <div className="text-[8px] font-medium uppercase tracking-wider text-[#8A8A9A] sm:text-[9px]">
                         LIVE FLOW
                       </div>
-                      <div className="text-[12px] font-medium text-[#0F1117]">
+                      <div className="text-[11px] font-medium leading-[1.45] text-[#0F1117] sm:text-[12px]">
                         Student asks in ChatGPT. stemLM handles the method.
                       </div>
                     </div>
                   ) : null}
 
-                  <div className="ml-auto max-w-[85%] rounded-[8px] bg-[#F0F0F0] px-3 py-2 text-[11px] text-[#0F1117]">
+                  <div className="ml-auto max-w-[88%] rounded-[8px] bg-[#F0F0F0] px-3 py-2 text-[11px] leading-[1.55] text-[#0F1117]">
                     {activeQuestion.shortMessage}
                   </div>
 
                   {stage !== "idle" ? (
-                    <div className="max-w-[90%] rounded-[8px] border border-[#E2E8F0] border-l-2 border-l-[#0EA5A0] bg-white px-3 py-2 text-[11px] text-[#64748B]">
+                    <div className="max-w-[92%] rounded-[8px] border border-[#E2E8F0] border-l-2 border-l-[#0EA5A0] bg-white px-3 py-2 text-[11px] leading-[1.55] text-[#64748B]">
                       {stage === "injecting" ? (
                         <span className="inline-flex items-center">
                           <span className="mr-1.5 inline-block h-3 w-3 rounded-full border border-[#0EA5A0] border-t-transparent animate-spin" />
@@ -523,9 +523,11 @@ export function Hero({ onOpenModal }: HeroProps) {
                   ) : null}
 
                   {stage === "done" ? (
-                    <div className="rounded-[6px] border border-[#E2E8F0] bg-[#F8F9FC] px-2 py-1.5 text-[10px] text-[#64748B]">
+                    <div className="rounded-[6px] border border-[#E2E8F0] bg-[#F8F9FC] px-2 py-1.5 text-[10px] leading-[1.45] text-[#64748B]">
                       <span>Matched topic: {activeQuestion.topicName}</span>
-                      <span className="ml-1 font-mono text-[9px] text-[#0EA5A0]">{activeQuestion.key}</span>
+                      <span className="ml-0 mt-0.5 block font-mono text-[9px] text-[#0EA5A0] sm:ml-1 sm:mt-0 sm:inline">
+                        {activeQuestion.key}
+                      </span>
                     </div>
                   ) : null}
                 </div>
@@ -579,12 +581,13 @@ export function Hero({ onOpenModal }: HeroProps) {
           </div>
 
           <div
-            className="min-w-0 overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white"
+            className={`min-h-0 min-w-0 overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white transition-transform duration-300 ease-out ${
+              isSplit ? "translate-y-0 sm:translate-x-0" : "translate-y-4 sm:translate-x-5 sm:translate-y-0"
+            }`}
             style={{
               flex: isSplit ? "0 0 45%" : "0 0 0%",
               opacity: isSplit ? 1 : 0,
-              transform: isSplit ? "translateX(0)" : "translateX(20px)",
-              transition: "flex 0.4s ease-out, opacity 0.4s ease-out, transform 0.4s ease-out",
+              transition: "flex 0.4s ease-out, opacity 0.4s ease-out",
               pointerEvents: isSplit ? "auto" : "none",
             }}
           >
@@ -594,12 +597,12 @@ export function Hero({ onOpenModal }: HeroProps) {
                   <span className="text-[12px] font-medium text-[#0F1117]">stem</span>
                   <span className="text-[12px] font-medium text-[#0EA5A0]">LM</span>
                 </div>
-                <span className="text-[9px] uppercase tracking-wider text-[#94A3B8]">
+                <span className="text-[8px] uppercase tracking-wider text-[#94A3B8] sm:text-[9px]">
                   SIDE PANEL
                 </span>
               </div>
 
-              <div className="flex-shrink-0 border-b border-[#E2E8F0] px-3 py-2">
+              <div className="hidden flex-shrink-0 border-b border-[#E2E8F0] px-3 py-2 sm:block">
                 <div className="mb-1 text-[9px] uppercase tracking-wider text-[#94A3B8]">
                   EXTRACTION STATUS
                 </div>
@@ -614,7 +617,17 @@ export function Hero({ onOpenModal }: HeroProps) {
                 </span>
               </div>
 
-              <div className="flex-[0_0_110px] border-b border-[#E2E8F0] px-3 py-2">
+              <div className="flex-shrink-0 border-b border-[#E2E8F0] px-3 py-2 sm:hidden">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[9px] uppercase tracking-wider text-[#94A3B8]">Matched topic</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#0EA5A015] px-2 py-1 font-mono text-[9px] text-[#0EA5A0]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
+                    {activeQuestion.subjectName}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex-[0_0_96px] border-b border-[#E2E8F0] px-3 py-2 sm:flex-[0_0_110px]">
                 <div className="flex h-full w-full items-center justify-center rounded-[6px] bg-[#F1F5F5]">
                   {activeQuestion.diagram}
                 </div>
@@ -622,10 +635,12 @@ export function Hero({ onOpenModal }: HeroProps) {
 
               <div className="flex-1 overflow-hidden px-3 py-2">
                 <div className="space-y-2">
-                  {activeQuestion.steps.map((step) => (
+                  {activeQuestion.steps.map((step, index) => (
                     <div
                       key={step.n}
-                      className="rounded-[6px] border border-[#E2E8F0] bg-[#F8F9FC] px-2.5 py-2"
+                      className={`rounded-[6px] border border-[#E2E8F0] bg-[#F8F9FC] px-2.5 py-2 ${
+                        index > 0 ? "hidden sm:block" : ""
+                      }`}
                     >
                       <div className="flex items-center gap-2">
                         <span className="rounded bg-[#0EA5A015] px-1.5 py-0.5 font-mono text-[9px] text-[#0EA5A0]">
@@ -645,7 +660,7 @@ export function Hero({ onOpenModal }: HeroProps) {
 
               <div className="flex flex-shrink-0 items-center justify-between border-t border-[#E2E8F0] px-3 py-2">
                 <span className="text-[9px] text-[#94A3B8]">Powered by stemLM</span>
-                <div className="flex gap-3">
+                <div className="hidden gap-3 sm:flex">
                   <button
                     type="button"
                     className="text-[10px] text-[#64748B] transition-colors hover:text-[#0F1117]"

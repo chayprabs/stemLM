@@ -32,7 +32,7 @@ export function Nav({ onOpenModal }: NavProps) {
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-3 px-4 sm:px-5 lg:px-12">
           <Link
             href="/"
-            className="font-wordmark text-[15px] font-medium text-[#0F1117]"
+            className="font-wordmark text-[18px] font-semibold tracking-[-0.3px] text-[#0F1117] sm:text-[19px]"
             aria-label="stemLM home"
           >
             <span>stem</span>
