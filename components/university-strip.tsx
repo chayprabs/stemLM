@@ -9,7 +9,6 @@ import iitDelhiLogo from "@/app/uni-logo/iit delhi (1).png";
 import manipalLogo from "@/app/uni-logo/manipal (1).png";
 import oxfordLogo from "@/app/uni-logo/oxford (1).png";
 import stanfordLogo from "@/app/uni-logo/stanford (1).png";
-import vitLogo from "@/app/uni-logo/vit (1).png";
 
 type University = {
   name: string;
@@ -26,7 +25,6 @@ const universities: University[] = [
   { name: "IIT Delhi", logo: iitDelhiLogo },
   { name: "Manipal", logo: manipalLogo },
   { name: "IIT Bombay", logo: iitBombayLogo },
-  { name: "VIT", logo: vitLogo },
   { name: "Stanford", logo: stanfordLogo, logoSize: 60, logoClassName: "mix-blend-multiply" },
   { name: "IISc Bangalore", logo: iiscLogo },
 ];
@@ -43,8 +41,8 @@ function UniversityLogo({
   logoClassName?: string;
 }) {
   return (
-    <div className="group flex h-full min-h-[132px] cursor-default flex-col items-center justify-center p-3 text-center sm:min-h-[156px] sm:p-4">
-      <div className="relative flex h-20 w-20 items-center justify-center">
+    <div className="group flex h-full min-h-[112px] cursor-default flex-col items-center justify-center p-2 text-center sm:min-h-[156px] sm:p-4">
+      <div className="relative flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
         <Image
           src={logo}
           alt={name}
@@ -53,7 +51,7 @@ function UniversityLogo({
           className={`object-contain grayscale opacity-70 transition-all duration-300 ease-in-out group-hover:scale-[1.05] group-hover:grayscale-0 group-hover:opacity-100 ${logoClassName}`}
         />
       </div>
-      <span className="mt-2 text-[11px] leading-[1.5] text-[#7C8798] transition-colors duration-150 group-hover:text-[#5B677A] sm:text-xs">
+      <span className="mt-1.5 text-[10px] leading-[1.35] text-[#7C8798] transition-colors duration-150 group-hover:text-[#5B677A] sm:mt-2 sm:text-xs sm:leading-[1.5]">
         {name}
       </span>
     </div>
@@ -75,7 +73,7 @@ export function UniversityStrip() {
         </h2>
       </div>
 
-      <div className="mx-auto grid max-w-[980px] grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+      <div className="mx-auto grid max-w-[980px] grid-cols-3 gap-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
         {universities.map((university) => (
           <UniversityLogo
             key={university.name}

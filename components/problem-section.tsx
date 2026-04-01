@@ -17,11 +17,11 @@ export function ProblemSection() {
             <div className="h-px max-w-[60px] flex-1 bg-[#E2E8F0]" />
           </div>
 
-          <h2 className="mb-3 max-w-[12ch] text-balance text-[24px] font-medium leading-tight tracking-[-0.5px] text-[#0F1117] sm:max-w-none sm:text-[32px] md:text-[34px]">
+          <h2 className="mb-3 max-w-[17ch] text-balance text-[22px] font-medium leading-[1.1] tracking-[-0.5px] text-[#0F1117] sm:max-w-none sm:text-[32px] sm:leading-tight md:text-[34px]">
             AI gives answers. Students need understanding.
           </h2>
 
-          <p className="mb-8 text-sm leading-[1.7] text-[#64748B]">
+          <p className="mb-8 max-w-[34ch] text-sm leading-[1.7] text-[#64748B] sm:max-w-none">
             Every STEM student uses AI. Most still don&apos;t understand what they
             submitted.
           </p>
@@ -30,14 +30,16 @@ export function ProblemSection() {
         <div className="max-w-[580px] lg:pt-8">
           <div className="space-y-2.5">
             {painPoints.map((line) => (
-              <div key={line} className="flex items-start gap-3">
+              <div key={line} className="flex items-start gap-2.5 sm:gap-3">
                 <span
                   aria-hidden="true"
                   className="pt-[2px] text-[15px] leading-[1.8] text-[#EF4444]"
                 >
                   &times;
                 </span>
-                <p className="text-[14px] leading-[1.75] text-[#334155] sm:text-[15px] sm:leading-[1.8]">{line}</p>
+                <p className="text-[13px] leading-[1.75] text-[#334155] sm:text-[15px] sm:leading-[1.8]">
+                  {line}
+                </p>
               </div>
             ))}
           </div>
