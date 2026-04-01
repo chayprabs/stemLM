@@ -57,7 +57,9 @@ function UniversityLogo({
           alt={name}
           width={logoSize}
           height={logoSize}
-          className={`object-contain grayscale opacity-70 transition-all duration-300 ease-in-out group-hover:scale-[1.05] group-hover:grayscale-0 group-hover:opacity-100 ${logoClassName}`}
+          quality={55}
+          sizes="(min-width: 640px) 80px, 64px"
+          className={`h-auto w-auto max-h-full max-w-full object-contain grayscale opacity-70 transition duration-300 ease-in-out group-hover:scale-[1.05] group-hover:grayscale-0 group-hover:opacity-100 ${logoClassName}`}
         />
       </div>
       <span className="mt-1.5 text-[10px] leading-[1.35] text-[#7C8798] transition-colors duration-150 group-hover:text-[#5B677A] sm:mt-2 sm:text-xs sm:leading-[1.5]">

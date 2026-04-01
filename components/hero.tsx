@@ -295,7 +295,10 @@ export function Hero({ onOpenModal }: HeroProps) {
 
       if (nextReplaySeconds <= 1) {
         setReplaySeconds(1);
-        clearReplayTimers();
+        if (replayIntervalRef.current) {
+          clearInterval(replayIntervalRef.current);
+          replayIntervalRef.current = null;
+        }
         return;
       }
 
@@ -666,23 +669,7 @@ export function Hero({ onOpenModal }: HeroProps) {
                 </div>
               </div>
 
-              <div className="flex flex-shrink-0 items-center justify-between border-t border-[#E2E8F0] px-3 py-2">
-                <span className="text-[9px] text-[#94A3B8]">Powered by stemLM</span>
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    className="text-[10px] text-[#64748B] transition-colors hover:text-[#0F1117]"
-                  >
-                    Copy
-                  </button>
-                  <button
-                    type="button"
-                    className="text-[10px] text-[#64748B] transition-colors hover:text-[#0F1117]"
-                  >
-                    Download
-                  </button>
-                </div>
-              </div>
+              <div className="h-9 flex-shrink-0 border-t border-[#E2E8F0] bg-white" />
 
               <div className="h-[2px] w-full flex-shrink-0 bg-[#E2E8F0]">
                 <div key={playKey} className="hero-progress-bar h-full w-full bg-[#0EA5A0]" />
