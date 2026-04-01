@@ -389,7 +389,7 @@ export function DatabaseTeaser() {
   const isReadyToInject = typedLength === question.length && !isInjecting && !messageSent;
 
   return (
-    <section id="extension" className="bg-[#FFFFFF] px-4 py-8 sm:px-5 md:px-12 md:py-12">
+    <section id="extension" className="hidden bg-[#FFFFFF] px-4 py-8 sm:block sm:px-5 md:px-12 md:py-12">
       <style jsx>{`
         @media (prefers-reduced-motion: no-preference) {
           @keyframes demo-cursor {

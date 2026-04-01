@@ -9,12 +9,14 @@ import iitDelhiLogo from "@/app/uni-logo/iit delhi (1).png";
 import manipalLogo from "@/app/uni-logo/manipal (1).png";
 import oxfordLogo from "@/app/uni-logo/oxford (1).png";
 import stanfordLogo from "@/app/uni-logo/stanford (1).png";
+import vitLogo from "@/app/uni-logo/vit (1).png";
 
 type University = {
   name: string;
   logo: StaticImageData;
   logoSize?: number;
   logoClassName?: string;
+  hideOnMobile?: boolean;
 };
 
 const universities: University[] = [
@@ -25,6 +27,7 @@ const universities: University[] = [
   { name: "IIT Delhi", logo: iitDelhiLogo },
   { name: "Manipal", logo: manipalLogo },
   { name: "IIT Bombay", logo: iitBombayLogo },
+  { name: "VIT", logo: vitLogo, hideOnMobile: true },
   { name: "Stanford", logo: stanfordLogo, logoSize: 60, logoClassName: "mix-blend-multiply" },
   { name: "IISc Bangalore", logo: iiscLogo },
 ];
@@ -34,14 +37,20 @@ function UniversityLogo({
   logo,
   logoSize = 80,
   logoClassName = "",
+  hideOnMobile = false,
 }: {
   name: string;
   logo: StaticImageData;
   logoSize?: number;
   logoClassName?: string;
+  hideOnMobile?: boolean;
 }) {
+  const containerClassName = hideOnMobile
+    ? "group hidden h-full min-h-[112px] cursor-default flex-col items-center justify-center p-2 text-center sm:flex sm:min-h-[156px] sm:p-4"
+    : "group flex h-full min-h-[112px] cursor-default flex-col items-center justify-center p-2 text-center sm:min-h-[156px] sm:p-4";
+
   return (
-    <div className="group flex h-full min-h-[112px] cursor-default flex-col items-center justify-center p-2 text-center sm:min-h-[156px] sm:p-4">
+    <div className={containerClassName}>
       <div className="relative flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
         <Image
           src={logo}
@@ -81,6 +90,7 @@ export function UniversityStrip() {
             logo={university.logo}
             logoSize={university.logoSize}
             logoClassName={university.logoClassName}
+            hideOnMobile={university.hideOnMobile}
           />
         ))}
       </div>

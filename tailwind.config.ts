@@ -24,7 +24,7 @@ const config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        wordmark: ['var(--font-geist-sans)', 'Inter', 'sans-serif'],
+        wordmark: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'Courier New', 'monospace'],
       },
       borderRadius: {
