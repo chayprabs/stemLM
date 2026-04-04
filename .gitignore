@@ -5,3 +5,8 @@ out
 dist
 coverage
 *.log
+.env
+.env.local
+.env.production
+.env*.local
+.wrangler/

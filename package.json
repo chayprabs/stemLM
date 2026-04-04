@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.0.8",
     "@fontsource/inter": "^5.0.0",
     "@fontsource/jetbrains-mono": "^5.0.0",
     "geist": "^1.0.0",
