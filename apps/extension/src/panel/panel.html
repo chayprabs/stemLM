@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>stemLM</title>
+    <link rel="stylesheet" href="./panel.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="header">
+        <div class="brand">stem<span>LM</span></div>
+        <p class="eyebrow">Structured STEM side panel</p>
+      </header>
+
+      <section class="stack">
+        <article class="card">
+          <p class="label">Detected key</p>
+          <div id="detected-key" class="key">Waiting for STEMLM_KEY...</div>
+        </article>
+
+        <article class="card">
+          <p class="label">Current tab</p>
+          <p id="tab-title" class="muted">Open a supported chatbot and click the stemLM button.</p>
+        </article>
+
+        <article class="card">
+          <p class="label">Next implementation step</p>
+          <p class="muted">
+            Wire this panel to `/api/topic/[key]`, render framework steps, and stream updates from the content script.
+          </p>
+        </article>
+
+        <div class="actions">
+          <button id="copy-key" class="button" type="button">Copy key</button>
+          <button id="download-session" class="button primary" type="button">Download</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="../utils/formatter.js"></script>
+    <script src="./panel.js"></script>
+  </body>
+</html>

@@ -68,7 +68,7 @@ function WorkspaceApp() {
   const [goal, setGoal] = useState(defaultGoal);
   const [activeScenarioId, setActiveScenarioId] = useState(defaultScenario.id);
   const [generatedQuestion, setGeneratedQuestion] = useState(defaultScenario.defaultQuestion);
-  const [generatedAt, setGeneratedAt] = useState<string | null>(new Date().toLocaleString());
+  const [generatedAt, setGeneratedAt] = useState<string | null>("Demo loaded");
   const [activeStepId, setActiveStepId] = useState(defaultScenario.steps[0].id);
   const [isGenerating, setIsGenerating] = useState(false);
   const [savedSessions, setSavedSessions] = useState<SavedSession[]>([]);

@@ -7,7 +7,7 @@ const requiredServerVars: Record<string, string | undefined> = {
 
 if (typeof window === "undefined") {
   const missing = Object.entries(requiredServerVars)
-    .filter(([_, v]) => !v)
+    .filter(([, value]) => !value)
     .map(([k]) => k)
 
   if (missing.length > 0) {

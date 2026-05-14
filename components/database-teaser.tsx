@@ -317,13 +317,17 @@ export function DatabaseTeaser() {
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
 
-    setTypedLength(0);
-    setIsInjecting(false);
-    setMessageSent(false);
-    setVisibleResponseSections(0);
-    setIsPanelVisible(false);
-    setVisiblePanelSteps(0);
-    setReplayCountdown(null);
+    timers.push(
+      setTimeout(() => {
+        setTypedLength(0);
+        setIsInjecting(false);
+        setMessageSent(false);
+        setVisibleResponseSections(0);
+        setIsPanelVisible(false);
+        setVisiblePanelSteps(0);
+        setReplayCountdown(null);
+      }, 0),
+    );
 
     for (let index = 1; index <= question.length; index += 1) {
       timers.push(setTimeout(() => setTypedLength(index), index * TYPE_SPEED_MS));

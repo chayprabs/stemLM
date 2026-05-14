@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowDown, ArrowRight } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 type QuestionIndex = 0 | 1 | 2;
 type DemoStage = "idle" | "injecting" | "responding" | "done";
@@ -239,12 +239,12 @@ export function Hero({ onOpenModal }: HeroProps) {
   const activeQuestion = questions[selectedQuestion];
   const isSplit = stage === "responding" || stage === "done";
 
-  function clearStageTimeouts() {
+  const clearStageTimeouts = useCallback(() => {
     stageTimeoutsRef.current.forEach((timeoutId) => clearTimeout(timeoutId));
     stageTimeoutsRef.current = [];
-  }
+  }, []);
 
-  function clearReplayTimers() {
+  const clearReplayTimers = useCallback(() => {
     if (replayIntervalRef.current) {
       clearInterval(replayIntervalRef.current);
       replayIntervalRef.current = null;
@@ -254,9 +254,9 @@ export function Hero({ onOpenModal }: HeroProps) {
       clearTimeout(replayTimeoutRef.current);
       replayTimeoutRef.current = null;
     }
-  }
+  }, []);
 
-  function scheduleStageChain(startFromInjecting: boolean) {
+  const scheduleStageChain = useCallback((startFromInjecting: boolean) => {
     clearStageTimeouts();
 
     if (startFromInjecting) {
@@ -274,22 +274,23 @@ export function Hero({ onOpenModal }: HeroProps) {
       setTimeout(() => setStage("responding"), 2000),
       setTimeout(() => setStage("done"), 3500),
     ];
-  }
+  }, [clearStageTimeouts]);
 
   useEffect(() => {
-    scheduleStageChain(false);
+    const startTimer = setTimeout(() => scheduleStageChain(false), 0);
 
     return () => {
+      clearTimeout(startTimer);
       clearStageTimeouts();
     };
-  }, [selectedQuestion, playKey]);
+  }, [selectedQuestion, playKey, scheduleStageChain, clearStageTimeouts]);
 
   useEffect(() => {
     clearReplayTimers();
 
-    setReplaySeconds(REPLAY_DURATION_SECONDS);
-
     let nextReplaySeconds = REPLAY_DURATION_SECONDS;
+    const resetTimer = setTimeout(() => setReplaySeconds(REPLAY_DURATION_SECONDS), 0);
+
     replayIntervalRef.current = setInterval(() => {
       nextReplaySeconds -= 1;
 
@@ -312,9 +313,10 @@ export function Hero({ onOpenModal }: HeroProps) {
     }, REPLAY_DURATION_SECONDS * 1000);
 
     return () => {
+      clearTimeout(resetTimer);
       clearReplayTimers();
     };
-  }, [selectedQuestion, playKey]);
+  }, [selectedQuestion, playKey, clearReplayTimers]);
 
   function handleChipClick(index: QuestionIndex) {
     clearStageTimeouts();
@@ -423,7 +425,7 @@ export function Hero({ onOpenModal }: HeroProps) {
             onClick={onOpenModal}
             className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#0EA5A0] px-6 py-3 text-base font-medium text-[#F0F0F2] transition-transform duration-150 hover:scale-[1.01] hover:bg-[#0EA5A0] sm:w-auto"
           >
-            <span>Get early access</span>
+            <span>Install Extension</span>
             <ArrowRight aria-hidden="true" size={16} strokeWidth={1.5} />
           </button>
 

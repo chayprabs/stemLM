@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "stemLM",
+  "version": "0.1.0",
+  "description": "Adds structured STEM solving support to ChatGPT, Gemini, and Claude.",
+  "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
+    "https://gemini.google.com/*",
+    "https://claude.ai/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
+        "https://gemini.google.com/*",
+        "https://claude.ai/*"
+      ],
+      "js": [
+        "src/utils/keyParser.js",
+        "src/utils/formatter.js",
+        "src/injector.js",
+        "src/extractor.js",
+        "src/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "src/panel/panel.html"
+  },
+  "action": {
+    "default_title": "Open stemLM"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["src/prompt-template.txt"],
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
+        "https://gemini.google.com/*",
+        "https://claude.ai/*"
+      ]
+    }
+  ]
+}
